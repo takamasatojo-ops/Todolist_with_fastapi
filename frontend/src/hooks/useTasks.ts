@@ -17,7 +17,7 @@ export function useTasks(){
     const fetchTasks = async() => {
 
       const res = await fetch(
-        "http://localhost:8000/tasks"
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks`
       );
 
       const data = await res.json();
@@ -61,7 +61,7 @@ export function useTasks(){
 
 
        const res = await fetch(
-        "http://localhost:8000/tasks/order",
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/order`,
         {
           method: "PUT",
           headers: {
@@ -98,7 +98,7 @@ export function useTasks(){
       setTasks(updatedTasks);
 
        const res = await fetch(
-        "http://localhost:8000/tasks/order",
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/order`,
         {
           method: "PUT",
           headers: {
@@ -122,7 +122,7 @@ export function useTasks(){
     const deleteTask = async (id:number) => {
 
       const res = await fetch(
-        `http://localhost:8000/tasks/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${id}`,
         {
           method: "DELETE",
         }
@@ -146,7 +146,7 @@ export function useTasks(){
     if(!task) return;
 
       const res = await fetch(
-        `http://localhost:8000/tasks/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${id}`,
         {
           method: "PUT",
           headers: {
@@ -191,7 +191,7 @@ export function useTasks(){
     if (editId===null) return;
 
       const res = await fetch(
-        `http://localhost:8000/tasks/${editId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${editId}`,
         {
           method: "PUT",
           headers: {
@@ -241,7 +241,7 @@ export function useTasks(){
     if (!newDate.trim()) return;
 
       const res = await fetch(
-        "http://localhost:8000/tasks",
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks`,
         {
           method: "POST",
           headers: {

@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
+import os
 
 from api.models.task import Base
 
-DB_URL = "mysql+pymysql://root@db:3306/demo?charset=utf8"
+DB_URL = os.getenv("MIGRATE_DATABASE_URL")
 engine = create_engine(DB_URL, echo=True)
 
 

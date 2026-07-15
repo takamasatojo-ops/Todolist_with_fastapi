@@ -8,6 +8,8 @@ services:
       - 8000:8000
     networks:
       - app-network
+    env_file:
+      - ./backend/.env
 
   frontend:
     build: ./frontend
@@ -19,6 +21,8 @@ services:
       - 3000:3000
     networks:
       - app-network
+    env_file:
+      - ./frontend/.env.local
 
   db:
     image: mysql:8.0
