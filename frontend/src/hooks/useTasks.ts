@@ -31,8 +31,6 @@ export function useTasks(){
         taskOrder: task.task_order,
       }))
 
-      console.log(formattedTasks)
-
       setTasks(formattedTasks);
     };
 
