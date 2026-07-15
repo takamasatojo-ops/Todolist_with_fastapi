@@ -25,4 +25,3 @@ class TaskResponse(TaskCreate):
 class TaskArrange(BaseModel):
     id: int
     task_order: int
-

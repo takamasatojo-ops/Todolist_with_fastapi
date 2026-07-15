@@ -1,9 +1,10 @@
+from typing import List, Optional
+
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 import api.models.task as task_model
 import api.schemas.task as task_schema
-
-from typing import List, Optional
 
 
 async def create_task(
@@ -16,9 +17,6 @@ async def create_task(
     return task
 
 
-from sqlalchemy import select
-
-
 async def get_tasks(db: AsyncSession) -> List[task_model.Task]:
     result = await db.execute(
         select(task_model.Task).order_by(task_model.Task.task_order)
@@ -26,7 +24,10 @@ async def get_tasks(db: AsyncSession) -> List[task_model.Task]:
     return result.scalars().all()
 
 
-async def get_task(db: AsyncSession, task_id: int) -> Optional[task_model.Task]:
+async def get_task(
+    db: AsyncSession,
+    task_id: int
+) -> Optional[task_model.Task]:
 
     result = await db.execute(
         select(task_model.Task).where(task_model.Task.id == task_id)
@@ -53,7 +54,9 @@ async def update_task_arrange(
 
 
 async def update_task(
-    db: AsyncSession, task_create: task_schema.TaskCreate, original: task_model.Task
+    db: AsyncSession,
+    task_create: task_schema.TaskCreate,
+    original: task_model.Task
 ) -> task_model.Task:
     original.title = task_create.title
     original.concept = task_create.concept

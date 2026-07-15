@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 
-import { Task } from "@/types/tasks";
+import { ApiTask, Task } from "@/types/tasks";
 
 export function useTasks(){
 
@@ -20,9 +20,9 @@ export function useTasks(){
         `${process.env.NEXT_PUBLIC_API_URL}/tasks`
       );
 
-      const data = await res.json();
+      const data:ApiTask[] = await res.json();
 
-      const formattedTasks = data.map((task:any) => ({
+      const formattedTasks:Task[] = data.map((task) => ({
         id: task.id,
         title: task.title,
         concept: task.concept,
@@ -166,7 +166,7 @@ export function useTasks(){
         throw new Error("タスク完了処理に失敗しました");
       }
 
-    const checkTask = await res.json();
+    const checkTask: ApiTask = await res.json();
 
     setTasks((prev) =>
         prev.map((task) =>
@@ -211,7 +211,7 @@ export function useTasks(){
         throw new Error("編集に失敗しました");
       }
 
-    const editTask = await res.json();
+    const editTask:ApiTask = await res.json();
 
     setTasks((prev) =>
         prev.map((task) =>
@@ -261,16 +261,16 @@ export function useTasks(){
         throw new Error("タスク追加に失敗しました");
       }
 
-      const newTask = await res.json();
+      const newTask:ApiTask = await res.json();
 
-      const formattedTask = {
+      const formattedTask:Task = {
         id: newTask.id,
         title: newTask.title,
         dueDate: newTask.due_date,
         concept: newTask.concept,
         done: newTask.done,
         taskOrder: newTask.task_order
-      }
+      };
 
     setTasks((prev) => [...prev, formattedTask]);
 

@@ -2,6 +2,7 @@
 
 import {
   DndContext,
+  DragEndEvent,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -52,7 +53,7 @@ export default function TaskList({
 
 }:Props){
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
 
     const {
         active,
