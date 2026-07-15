@@ -1,0 +1,41 @@
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/src
+      - /src/.venv
+    ports:
+      - 8000:8000
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - 3000:3000
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    platform: linux/x86_64
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'demo'
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 33306:3306
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:

@@ -1,4 +1,4 @@
-# python3.9のイメージをダウンロード
+# python3.11のイメージをダウンロード
 FROM python:3.11-buster
 ENV PYTHONUNBUFFERED=1
 ENV POETRY_VIRTUALENVS_IN_PROJECT=true

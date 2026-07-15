@@ -47,7 +47,7 @@ async def update_task_arrange(
         task = result.scalar_one_or_none()
 
         if task:
-            task.task_arrange = item.task_arrange
+            task.task_order = item.task_order
 
     await db.commit()
 

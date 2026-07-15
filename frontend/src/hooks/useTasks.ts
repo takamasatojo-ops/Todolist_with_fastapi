@@ -39,37 +39,85 @@ export function useTasks(){
     fetchTasks();
   },[]);
 
-  const updateTaskOrder = (tasks: Task[]) => {
-    return tasks.map((task, index) => ({
-      ...task,
-      taskOrder: index,
-    }));
-  };
 
   const reorderTasks = async(
     oldIndex:number,
     newIndex:number
   )=> {
 
-    setTasks((prev) => {
-      const newTasks = [...prev];
+    const newTasks = [...tasks];
 
-      const [movedTask] = newTasks.splice(oldIndex,1);
+    const[movedTask] = newTasks.splice(oldIndex,1);
 
-      newTasks.splice(newIndex,0,movedTask);
+    newTasks.splice(newIndex,0,movedTask);
 
-      return updateTaskOrder(newTasks);
-    });
+    const updatedTasks = newTasks.map((task, index) => ({
+        ...task,
+        taskOrder: index,
+      }));
+    
+
+    setTasks(updatedTasks);
+
+
+       const res = await fetch(
+        "http://localhost:8000/tasks/order",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(
+            updatedTasks.map(task=>({
+            id: task.id,
+            task_order: task.taskOrder
+              }))
+            )
+          }
+        );
+
+      if (!res.ok) {
+        throw new Error("並び替えに失敗しました");
+      }
 
   };
 
-  const sortedTasks = [...tasks].sort((a, b) =>
-    a.dueDate.localeCompare(b.dueDate)
-);
 
-  const ArrangeTasks = () => {
-    setTasks(sortedTasks);
-  }
+  const ArrangeTasks = async() => {
+
+      const sortedTasks = [...tasks].sort((a, b) =>
+      a.dueDate.localeCompare(b.dueDate)
+      );
+
+      const updatedTasks = sortedTasks.map((task, index) => ({
+        ...task,
+        taskOrder: index,
+      }));
+
+
+      setTasks(updatedTasks);
+
+       const res = await fetch(
+        "http://localhost:8000/tasks/order",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(
+            updatedTasks.map(task=>({
+            id: task.id,
+            task_order: task.taskOrder
+            }))
+          )
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("並び替えに失敗しました");
+      }
+
+  };
 
     const deleteTask = async (id:number) => {
 
@@ -233,7 +281,6 @@ export function useTasks(){
 
     return {
         tasks,
-        sortedTasks,
         editId,
         editConcept,
         newTitle,
