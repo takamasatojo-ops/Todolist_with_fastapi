@@ -19,7 +19,7 @@ async def create_task(
 
 async def get_tasks(db: AsyncSession) -> List[task_model.Task]:
     result = await db.execute(
-        select(task_model.Task).order_by(task_model.Task.task_order)
+        select(task_model.Task).order_by(task_model.Task.taskOrder)
     )
     return result.scalars().all()
 
@@ -48,7 +48,7 @@ async def update_task_arrange(
         task = result.scalar_one_or_none()
 
         if task:
-            task.task_order = item.task_order
+            task.taskOrder = item.taskOrder
 
     await db.commit()
 
@@ -60,7 +60,7 @@ async def update_task(
 ) -> task_model.Task:
     original.title = task_create.title
     original.concept = task_create.concept
-    original.due_date = task_create.due_date
+    original.dueDate = task_create.dueDate
     original.done = task_create.done
     db.add(original)
     await db.commit()

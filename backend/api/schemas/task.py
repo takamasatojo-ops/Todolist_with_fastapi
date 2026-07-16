@@ -7,12 +7,12 @@ from pydantic import BaseModel
 class TaskBase(BaseModel):
     title: str
     concept: Optional[str] = None
-    due_date: Optional[date] = None
+    dueDate: Optional[date] = None
 
 
 class TaskCreate(TaskBase):
     done: bool = False
-    task_order: int = 0
+    taskOrder: int = 0
 
 
 class TaskResponse(TaskCreate):
@@ -24,4 +24,4 @@ class TaskResponse(TaskCreate):
 
 class TaskArrange(BaseModel):
     id: int
-    task_order: int
+    taskOrder: int

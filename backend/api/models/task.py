@@ -10,8 +10,8 @@ class Task(Base):
     title = Column(String(1024))
 
     concept = Column(Text)
-    due_date = Column(Date)
+    dueDate = Column(Date)
 
     done = Column(Boolean, default=False)
 
-    task_order = Column(Integer, default=0)
+    taskOrder = Column(Integer, default=0)

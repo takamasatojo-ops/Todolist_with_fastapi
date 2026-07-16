@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 
-import { ApiTask, Task } from "@/types/tasks";
+import { Task } from "@/types/tasks";
 
 export function useTasks(){
 
@@ -20,15 +20,15 @@ export function useTasks(){
         `${process.env.NEXT_PUBLIC_API_URL}/tasks`
       );
 
-      const data:ApiTask[] = await res.json();
+      const data:Task[] = await res.json();
 
       const formattedTasks:Task[] = data.map((task) => ({
         id: task.id,
         title: task.title,
         concept: task.concept,
-        dueDate: task.due_date,
+        dueDate: task.dueDate,
         done: task.done,
-        taskOrder: task.task_order,
+        taskOrder: task.taskOrder,
       }))
 
       setTasks(formattedTasks);
@@ -43,13 +43,13 @@ export function useTasks(){
     newIndex:number
   )=> {
 
-    const newTasks = [...tasks];
+    const newTasks: Task[] = [...tasks];
 
     const[movedTask] = newTasks.splice(oldIndex,1);
 
     newTasks.splice(newIndex,0,movedTask);
 
-    const updatedTasks = newTasks.map((task, index) => ({
+    const updatedTasks: Task[] = newTasks.map((task, index) => ({
         ...task,
         taskOrder: index,
       }));
@@ -68,7 +68,7 @@ export function useTasks(){
           body: JSON.stringify(
             updatedTasks.map(task=>({
             id: task.id,
-            task_order: task.taskOrder
+            taskOrder: task.taskOrder
               }))
             )
           }
@@ -83,11 +83,11 @@ export function useTasks(){
 
   const ArrangeTasks = async() => {
 
-      const sortedTasks = [...tasks].sort((a, b) =>
+      const sortedTasks: Task[] = [...tasks].sort((a, b) =>
       a.dueDate.localeCompare(b.dueDate)
       );
 
-      const updatedTasks = sortedTasks.map((task, index) => ({
+      const updatedTasks: Task[] = sortedTasks.map((task, index) => ({
         ...task,
         taskOrder: index,
       }));
@@ -105,7 +105,7 @@ export function useTasks(){
           body: JSON.stringify(
             updatedTasks.map(task=>({
             id: task.id,
-            task_order: task.taskOrder
+            taskOrder: task.taskOrder
             }))
           )
         }
@@ -151,11 +151,11 @@ export function useTasks(){
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            due_date: task.dueDate,
+            dueDate: task.dueDate,
             title: task.title,
             concept: task.concept,
             done: !task.done,
-            task_order: task.taskOrder
+            taskOrder: task.taskOrder
           }),
         }
       );
@@ -164,7 +164,7 @@ export function useTasks(){
         throw new Error("タスク完了処理に失敗しました");
       }
 
-    const checkTask: ApiTask = await res.json();
+    const checkTask:Task = await res.json();
 
     setTasks((prev) =>
         prev.map((task) =>
@@ -196,11 +196,11 @@ export function useTasks(){
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            due_date: newDate.trim(),
+            dueDate: newDate.trim(),
             title: newTitle.trim(),
             concept: editConcept.trim(),
             done: false,
-            task_order: 0
+            taskOrder: 0
           }),
         }
       );
@@ -209,7 +209,7 @@ export function useTasks(){
         throw new Error("編集に失敗しました");
       }
 
-    const editTask:ApiTask = await res.json();
+    const editTask: Task = await res.json();
 
     setTasks((prev) =>
         prev.map((task) =>
@@ -217,10 +217,10 @@ export function useTasks(){
             ? {
         id: editTask.id,
         title: editTask.title,
-        dueDate: editTask.due_date,
+        dueDate: editTask.dueDate,
         concept: editTask.concept,
         done: editTask.done,
-        taskOrder: editTask.task_order
+        taskOrder: editTask.taskOrder
         }: task
       )
     );
@@ -246,11 +246,11 @@ export function useTasks(){
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            due_date: newDate.trim(),
+            dueDate: newDate.trim(),
             title: newTitle.trim(),
             concept: editConcept.trim(),
             done: false,
-            task_order: tasks.length
+            taskOrder: tasks.length
           }),
         }
       );
@@ -259,15 +259,15 @@ export function useTasks(){
         throw new Error("タスク追加に失敗しました");
       }
 
-      const newTask:ApiTask = await res.json();
+      const newTask:Task = await res.json();
 
       const formattedTask:Task = {
         id: newTask.id,
         title: newTask.title,
-        dueDate: newTask.due_date,
+        dueDate: newTask.dueDate,
         concept: newTask.concept,
         done: newTask.done,
-        taskOrder: newTask.task_order
+        taskOrder: newTask.taskOrder
       };
 
     setTasks((prev) => [...prev, formattedTask]);
