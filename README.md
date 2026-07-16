@@ -26,6 +26,7 @@ To-do-list/
     .env.local.example          .env.localファイルの記載例
     tsconfig.json               TypeScriptのコンパイル設定、型チェック設定のためのファイル
     pnpm-lock.yaml              pnpmにおいて、依存関係や正確なバージョンを記録するためのファイル
+    pnpm-workspace.yaml         pnpm workspaceで、管理するパッケージの範囲を定義するファイル
     next.config.ts              Next.jsのビルドや動作設定を管理するファイル
     eslint.config.mjs           TypeScriptなどのコードを解析し、バグなどを検出するためのもの
     src/
