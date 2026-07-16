@@ -4,7 +4,7 @@ FROM node:22
 WORKDIR /app
 
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml ./
 
 
 RUN corepack enable
