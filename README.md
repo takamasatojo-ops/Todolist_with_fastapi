@@ -1,6 +1,6 @@
 # TODOリスト（作成中）
 
-ブラウザで使用するTODOリストです。
+ブラウザ上で使用するTODOリストです。
 
 ## ディレクトリ構成
 
@@ -9,7 +9,7 @@ To-do-list/
   docker-compose.yaml           docker-compose起動のためのyamlファイル
   backend/                      API、DB操作のフォルダ
     Dockerfile                  backendのドッカーファイル
-    poetry.lock                 現環境で適用されているライブラリと具体的なバージョンが記載されたファイル
+    poetry.lock                 依存ライブラリと具体的なバージョンを固定するファイル
     pyproject.toml              python依存関係を記載。適用したいライブラリが記載されたファイル
     .env.example                .envファイル記載例
     api/
@@ -24,9 +24,9 @@ To-do-list/
     Dockerfile                  frontendのドッカーファイル
     package.json                Node.jsプロジェクトの設計図となるメタデータファイル
     .env.local.example          .env.localファイルの記載例
-    tsconfig.json               TSファイルをJSファイルにコンパイルするための設定ファイル
+    tsconfig.json               TypeScriptのコンパイル設定、型チェック設定のためのファイル
     pnpm-lock.yaml              pnpmにおいて、依存関係や正確なバージョンを記録するためのファイル
-    next.config.ts              Next.jsの設定を正しい型に合わせて外部に提供するためのテンプレート
+    next.config.ts              Next.jsのビルドや動作設定を管理するファイル
     postcss.config.mjs          プラグインを通してCSSを変換、最適化するためのもの
     eslint.config.mjs           TypeScriptなどのコードを解析し、バグなどを検出するためのもの
     src/
@@ -35,6 +35,16 @@ To-do-list/
       hooks/                    UIを動かすロジック
       types/                    型定義
 ```
+
+## 使用技術
+- python 3.11
+- sqlalchemy
+- pydantic
+- FastAPI
+- Next.js
+- node
+- mysql:8.0
+- Docker/Docker-compose
 
 ## 立ち上げ
 
@@ -45,30 +55,32 @@ To-do-list/
   backend/    ←  .envを配置
   frontend/   ←  .env.localを配置
 ```
-.envについては、.env.exampleを参考に
-.env.localについては、.env.local.exampleを参考に作成
+.envについては、.env.exampleを参考に、.env.localについては、.env.local.exampleを参考に作成
 
-- docker-composeを立ち上げる。
+- docker-composeを起動。起動後には以下の３つのコンテナが立ち上げる
+  - backend
+  - frontend
+  - mysql
 
 ```bash
 docker compose up
 ```
 
-バックグラウンドで立ち上げる場合
+- バックグラウンドで立ち上げる場合
 ```bash
 docker compose up -d
 ```
 
-- 初回起動時のみ、ドッカーを起動後、さデータベースにテーブルを作成する。
-テーブル作成については、以下のコマンドで実施
+- 初回起動時のみ、データベースにテーブルを作成する。テーブル作成については、以下のコマンドで実施
 ```bash
-docker compose exec backend bash #backendのドッカーに入る
-poetry run python -m api.migrate_db #テーブル作成
+# backendのドッカーに入る
+docker compose exec backend bash
+# テーブル作成
+poetry run python -m api.migrate_db
 ```
 
 ## Todoリスト起動
-.env.localに記載したURLにアクセスする。
-初回起動時は何も予定が入っていない状態になっている。
+- .env.localに記載したURLにアクセスする。初回起動時は何も予定が入っていない状態になっている。
 
 ## 予定を追加
 1. 年/月/日の欄をクリックするとカレンダーが表示される。タスクを終えたい日を選ぶ。
@@ -84,7 +96,7 @@ poetry run python -m api.migrate_db #テーブル作成
 - 「タスクを日付順に入れ替える」をクリックすることで、タスクが日付順（一番下が最も後の日付）になります。
 
 ## 操作終了後について
-以下のコマンドを実行して、docker-composeを終了する。（DBの中身は維持される）
+- 以下のコマンドを実行して、docker-composeを終了する。（DBの中身は維持される）
 ```bash
 docker compose down
 ```
