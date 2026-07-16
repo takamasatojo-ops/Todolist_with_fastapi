@@ -11,16 +11,17 @@ type Props = {
   startEdit: (task:Task) => void;
   deleteTask: (id:number) => void;
 
-  newDate: string;
-  newTitle: string;
+  editDate: string;
+  editTitle: string;
   editConcept: string;
   editId: number|null;
 
-  setNewDate: (value:string) => void;
-  setNewTitle: (value:string) =>void;
+  setEditDate: (value:string) => void;
+  setEditTitle: (value:string) =>void;
   setEditConcept: (value:string) =>void;
 
   EditConcept: (e: React.SubmitEvent<HTMLFormElement>) =>void;
+  CancelEdit:() => void;
 };
 
 export default function TaskItem({
@@ -29,16 +30,17 @@ export default function TaskItem({
     startEdit,
     deleteTask,
 
-  newDate,
-  newTitle,
+  editDate,
+  editTitle,
   editConcept,
   editId,
 
-  setNewDate,
-  setNewTitle,
+  setEditDate,
+  setEditTitle,
   setEditConcept,
 
   EditConcept,
+  CancelEdit,
 
 }:Props){
 
@@ -81,25 +83,25 @@ export default function TaskItem({
                     {task.dueDate}
                 </span>
                 {task.title}
-                <span style={{color:"rgba(0,0,0,0.5)", margin: "12px"}}>
+                <span style={{color:"rgba(0,0,0,0.5)", margin: "8px"}}>
                     {task.concept}
                 </span>
-                <button onClick={() => startEdit(task)} style={{marginRight: "12px"}}>
+                <button onClick={() => startEdit(task)} style={{marginRight: "6px", marginBottom: "12px", }}>
                     内容編集
                 </button>
                 <form onSubmit = {EditConcept} style = {{marginBottom: "16px", display: editId === task.id ? "block" : "none"}}>
                     <input
                         type = "date"
                         placeholder = "日付変更"
-                        value = {newDate}
-                        onChange = {(e) => setNewDate(e.target.value)}
+                        value = {editDate}
+                        onChange = {(e) => setEditDate(e.target.value)}
                         style = {{padding: "8px", marginRight: "8px", width: "100px" }}
                     />
                     <input
                         type = "text"
                         placeholder = "タスク修正"
-                        value = {newTitle}
-                        onChange = {(e) => setNewTitle(e.target.value)}
+                        value = {editTitle}
+                        onChange = {(e) => setEditTitle(e.target.value)}
                         style = {{padding: "8px", margin: "8px", width: "200px" }}
                     />
                     <input
@@ -110,8 +112,11 @@ export default function TaskItem({
                         style = {{padding: "8px", marginRight: "8px", width: "400px" }}
                     />
                     <button type = "submit">保存</button>
+                    <button onClick={() => CancelEdit()} style={{marginLeft: "8px"}}>
+                    編集取消
+                    </button>
                 </form>
-                <button onClick={() => deleteTask(task.id)} style={{marginLeft: "8px"}}>
+                <button onClick={() => deleteTask(task.id)} style={{marginBottom: "12px"}}>
                 タスク削除
                 </button>
             </li>

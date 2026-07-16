@@ -7,6 +7,9 @@ export function useTasks(){
 
   const [editId, setEditId] = useState<number | null>(null);
   const [editConcept, setEditConcept] = useState("");
+  const [editTitle, setEditTitle] = useState("");
+  const [editDate, setEditDate] = useState("");
+  const [newConcept, setNewConcept] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newDate, setNewDate] = useState("");
 
@@ -176,16 +179,23 @@ export function useTasks(){
 
   const startEdit = (task:Task) => {
     setEditId(task.id)
-    setNewTitle(task.title)
+    setEditTitle(task.title)
     setEditConcept(task.concept ?? "")
-    setNewDate(task.dueDate ?? "")
+    setEditDate(task.dueDate ?? "")
+  }
+
+  const CancelEdit = () => {
+    setEditId(null)
+    setEditConcept("")
+    setEditDate("")
+    setEditTitle("")
   }
 
   const EditConcept = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!newTitle.trim()) return;
-    if (!newDate.trim()) return;
+    if (!editTitle.trim()) return;
+    if (!editDate.trim()) return;
     if (editId===null) return;
 
       const res = await fetch(
@@ -196,8 +206,8 @@ export function useTasks(){
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            dueDate: newDate.trim(),
-            title: newTitle.trim(),
+            dueDate: editDate.trim(),
+            title: editTitle.trim(),
             concept: editConcept.trim(),
             done: false,
             taskOrder: 0
@@ -227,8 +237,8 @@ export function useTasks(){
 
     setEditId(null);
     setEditConcept("");
-    setNewDate("");
-    setNewTitle("")
+    setEditDate("");
+    setEditTitle("")
   };
 
   //フォーム送信時に呼び出される関数
@@ -248,7 +258,7 @@ export function useTasks(){
           body: JSON.stringify({
             dueDate: newDate.trim(),
             title: newTitle.trim(),
-            concept: editConcept.trim(),
+            concept: newConcept.trim(),
             done: false,
             taskOrder: tasks.length
           }),
@@ -274,21 +284,28 @@ export function useTasks(){
 
     setNewDate("");
     setNewTitle("");
-    setEditConcept("");
+    setNewConcept("");
   };
 
     return {
         tasks,
         editId,
         editConcept,
+        editTitle,
+        editDate,
         newTitle,
         newDate,
+        newConcept,
         setEditConcept,
+        setEditDate,
+        setEditTitle,
         setNewDate,
         setNewTitle,
+        setNewConcept,
         deleteTask,
         turnCheck,
         startEdit,
+        CancelEdit,
         EditConcept,
         AddTask,
         ArrangeTasks,

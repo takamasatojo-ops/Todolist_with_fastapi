@@ -15,15 +15,16 @@ type Props = {
   tasks: Task[];
   turnCheck: (id:number) => void;
   startEdit: (task:Task) => void;
+  CancelEdit: () => void;
   deleteTask: (id:number) => void;
 
-  newDate: string;
-  newTitle: string;
+  editDate: string;
+  editTitle: string;
   editConcept: string;
   editId: number|null;
 
-  setNewDate: (value:string) => void;
-  setNewTitle: (value:string) => void;
+  setEditDate: (value:string) => void;
+  setEditTitle: (value:string) => void;
   setEditConcept: (value:string) => void;
 
   EditConcept: (e: React.SubmitEvent<HTMLFormElement>) =>void;
@@ -36,15 +37,16 @@ export default function TaskList({
     tasks,
     turnCheck,
     startEdit,
+    CancelEdit,
     deleteTask,
 
-  newDate,
-  newTitle,
+  editDate,
+  editTitle,
   editConcept,
   editId,
 
-  setNewDate,
-  setNewTitle,
+  setEditDate,
+  setEditTitle,
   setEditConcept,
 
   EditConcept,
@@ -93,14 +95,15 @@ export default function TaskList({
                 task={task}
                 turnCheck={turnCheck}
                 startEdit={startEdit}
+                CancelEdit={CancelEdit}
                 deleteTask={deleteTask}
-                newDate={newDate}
-                newTitle={newTitle}
+                editDate={editDate}
+                editTitle={editTitle}
                 editConcept={editConcept}
                 editId={editId}
 
-                setNewDate={setNewDate}
-                setNewTitle={setNewTitle}
+                setEditDate={setEditDate}
+                setEditTitle={setEditTitle}
                 setEditConcept={setEditConcept}
 
                 EditConcept={EditConcept}

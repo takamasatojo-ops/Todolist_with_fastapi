@@ -19,14 +19,21 @@ export default function Home() {
         tasks,
         editId,
         editConcept,
+        editDate,
+        editTitle,
         newTitle,
         newDate,
+        newConcept,
         setEditConcept,
+        setEditDate,
+        setEditTitle,
         setNewDate,
         setNewTitle,
+        setNewConcept,
         deleteTask,
         turnCheck,
         startEdit,
+        CancelEdit,
         EditConcept,
         AddTask,
         ArrangeTasks,
@@ -41,11 +48,11 @@ export default function Home() {
                 AddTask={AddTask}
                 newDate={newDate}
                 newTitle={newTitle}
-                editConcept={editConcept}
+                newConcept={newConcept}
 
                 setNewDate={setNewDate}
                 setNewTitle={setNewTitle}
-                setEditConcept={setEditConcept}
+                setNewConcept={setNewConcept}
 
                 ArrangeTasks={ArrangeTasks}
         />
@@ -56,14 +63,15 @@ export default function Home() {
                 tasks={tasks}
                 turnCheck={turnCheck}
                 startEdit={startEdit}
+                CancelEdit={CancelEdit}
                 deleteTask={deleteTask}
-                newDate={newDate}
-                newTitle={newTitle}
+                editDate={editDate}
+                editTitle={editTitle}
                 editConcept={editConcept}
                 editId={editId}
 
-                setNewDate={setNewDate}
-                setNewTitle={setNewTitle}
+                setEditDate={setEditDate}
+                setEditTitle={setEditTitle}
                 setEditConcept={setEditConcept}
 
                 EditConcept={EditConcept}

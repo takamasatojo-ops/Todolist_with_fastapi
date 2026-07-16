@@ -7,11 +7,11 @@ type Props = {
 
   newDate: string;
   newTitle: string;
-  editConcept: string;
+  newConcept: string;
 
   setNewDate: (value:string) => void;
   setNewTitle: (value:string) => void;
-  setEditConcept: (value:string) => void;
+  setNewConcept: (value:string) => void;
 
   ArrangeTasks: () => void;
 
@@ -23,11 +23,11 @@ export default function TaskList({
 
   newDate,
   newTitle,
-  editConcept,
+  newConcept,
 
   setNewDate,
   setNewTitle,
-  setEditConcept,
+  setNewConcept,
 
   ArrangeTasks,
 
@@ -53,8 +53,8 @@ export default function TaskList({
                 <input
                     type = "text"
                     placeholder = "タスクの内容"
-                    value = {editConcept}
-                    onChange = {(e) => setEditConcept(e.target.value)}
+                    value = {newConcept}
+                    onChange = {(e) => setNewConcept(e.target.value)}
                     style = {{padding: "8px", marginRight: "8px", width: "400px" }}
                 />
                 <button type = "submit">追加</button>
