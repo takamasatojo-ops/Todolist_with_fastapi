@@ -83,13 +83,13 @@ export default function TaskList({
     }
   }
 
-    return (
-  <DndContext
-    onDragEnd ={handleDragEnd}
-  >
+  return (
 
-    <SortableContext items={tasks}>
-            {tasks.map((task)=>(
+  <div className="task-list">
+    <DndContext onDragEnd ={handleDragEnd}>
+
+      <SortableContext items={tasks}>
+              {tasks.map((task)=>(
                 <TaskItem
                 key={task.id}
                 task={task}
@@ -107,13 +107,12 @@ export default function TaskList({
                 setEditConcept={setEditConcept}
 
                 EditConcept={EditConcept}
-
                 />
-                
-            ))}
-    </SortableContext>
 
-  </DndContext>
-        
+              ))}
+      </SortableContext>
+
+    </DndContext>
+  </div>
     );
 }

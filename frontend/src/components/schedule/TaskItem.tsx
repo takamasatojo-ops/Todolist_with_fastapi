@@ -4,6 +4,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 
 import { Task } from "@/types/tasks";
+import EditTask from '../edittask/edittask';
 
 type Props = {
   task: Task;
@@ -21,6 +22,7 @@ type Props = {
   setEditConcept: (value:string) =>void;
 
   EditConcept: (e: React.SubmitEvent<HTMLFormElement>) =>void;
+
   CancelEdit:() => void;
 };
 
@@ -89,33 +91,20 @@ export default function TaskItem({
                 <button onClick={() => startEdit(task)} style={{marginRight: "6px", marginBottom: "12px", }}>
                     内容編集
                 </button>
-                <form onSubmit = {EditConcept} style = {{marginBottom: "16px", display: editId === task.id ? "block" : "none"}}>
-                    <input
-                        type = "date"
-                        placeholder = "日付変更"
-                        value = {editDate}
-                        onChange = {(e) => setEditDate(e.target.value)}
-                        style = {{padding: "8px", marginRight: "8px", width: "100px" }}
+                <div className='edit-task' style = {{display: editId === task.id ? "block" : "none"}}>
+                    <EditTask
+                        editDate={editDate}
+                        editTitle={editTitle}
+                        editConcept={editConcept}
+
+                        setEditDate={setEditDate}
+                        setEditTitle={setEditTitle}
+                        setEditConcept={setEditConcept}
+
+                        EditConcept={EditConcept}
+                        CancelEdit={CancelEdit}
                     />
-                    <input
-                        type = "text"
-                        placeholder = "タスク修正"
-                        value = {editTitle}
-                        onChange = {(e) => setEditTitle(e.target.value)}
-                        style = {{padding: "8px", margin: "8px", width: "200px" }}
-                    />
-                    <input
-                        type = "text"
-                        placeholder = "内容の編集"
-                        value = {editConcept}
-                        onChange = {(e) => setEditConcept(e.target.value)}
-                        style = {{padding: "8px", marginRight: "8px", width: "400px" }}
-                    />
-                    <button type = "submit">保存</button>
-                    <button onClick={() => CancelEdit()} style={{marginLeft: "8px"}}>
-                    編集取消
-                    </button>
-                </form>
+                </div>
                 <button onClick={() => deleteTask(task.id)} style={{marginBottom: "12px"}}>
                 タスク削除
                 </button>

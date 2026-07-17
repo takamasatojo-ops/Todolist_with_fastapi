@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { Task } from "@/types/tasks";
 
+
 export function useTasks(){
 
   const [editId, setEditId] = useState<number | null>(null);
@@ -12,6 +13,7 @@ export function useTasks(){
   const [newConcept, setNewConcept] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newDate, setNewDate] = useState("");
+  
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -184,6 +186,13 @@ export function useTasks(){
     setEditDate(task.dueDate ?? "")
   }
 
+  const startCalendarEdit = (task:Task) => {
+    setEditId(task.id)
+    setEditTitle(task.title)
+    setEditConcept(task.concept ?? "")
+    setEditDate(task.dueDate ?? "")
+  }
+
   const CancelEdit = () => {
     setEditId(null)
     setEditConcept("")
@@ -305,6 +314,7 @@ export function useTasks(){
         deleteTask,
         turnCheck,
         startEdit,
+        startCalendarEdit,
         CancelEdit,
         EditConcept,
         AddTask,
