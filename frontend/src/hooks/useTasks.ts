@@ -10,10 +10,10 @@ export function useTasks(){
   const [editConcept, setEditConcept] = useState("");
   const [editTitle, setEditTitle] = useState("");
   const [editDate, setEditDate] = useState("");
+  const [editPosition, setEditPosition] = useState("");
   const [newConcept, setNewConcept] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newDate, setNewDate] = useState("");
-  
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -184,6 +184,7 @@ export function useTasks(){
     setEditTitle(task.title)
     setEditConcept(task.concept ?? "")
     setEditDate(task.dueDate ?? "")
+    setEditPosition("list")
   }
 
   const startCalendarEdit = (task:Task) => {
@@ -191,6 +192,7 @@ export function useTasks(){
     setEditTitle(task.title)
     setEditConcept(task.concept ?? "")
     setEditDate(task.dueDate ?? "")
+    setEditPosition("calender")
   }
 
   const CancelEdit = () => {
@@ -294,6 +296,47 @@ export function useTasks(){
     setNewDate("");
     setNewTitle("");
     setNewConcept("");
+    setEditPosition("");
+  };
+
+  const changeDateCalendar = async (
+    id:number,
+    date:string
+  ) => {
+
+    const task =tasks.find(
+      task => task.id ===id
+    );
+
+    if(!task) return;
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            dueDate: date,
+            title: task.title,
+            concept: task.concept,
+            done: task.done,
+            taskOrder: task.taskOrder
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("日付変更処理に失敗しました");
+      }
+
+    setTasks((prev) =>
+        prev.map((task) =>
+            task.id === id
+            ? {...task, dueDate:date} :task
+        )
+    );
   };
 
     return {
@@ -302,6 +345,7 @@ export function useTasks(){
         editConcept,
         editTitle,
         editDate,
+        editPosition,
         newTitle,
         newDate,
         newConcept,
@@ -320,5 +364,6 @@ export function useTasks(){
         AddTask,
         ArrangeTasks,
         reorderTasks,
+        changeDateCalendar,
     };
 }

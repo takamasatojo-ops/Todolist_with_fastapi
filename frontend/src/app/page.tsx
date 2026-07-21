@@ -10,12 +10,16 @@ import TaskCalendar from "@/components/calendar/calendar"
 
 import TaskEdit from '@/components/edittask/edittask';
 
+import { Task } from "@/types/tasks";
+
 const TaskList = dynamic(
   () => import("@/components/schedule/TaskList"),
   {
     ssr:false
   }
 );
+
+
 
 export default function Home() {
   // useStateでタスクを管理
@@ -26,6 +30,7 @@ export default function Home() {
         editConcept,
         editDate,
         editTitle,
+        editPosition,
         newTitle,
         newDate,
         newConcept,
@@ -44,10 +49,12 @@ export default function Home() {
         AddTask,
         ArrangeTasks,
         reorderTasks,
+        changeDateCalendar,
   } =useTasks()
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task |null>(null);
 
   const handleEditConcept = async (
     e: React.SubmitEvent<HTMLFormElement>) => {
@@ -68,6 +75,10 @@ export default function Home() {
     setShowEditModal(false);
   }
 
+  const cancelAdd = () => {
+    setShowAddModal(false);
+  }
+
   return (
     <main>
       {showAddModal && (
@@ -83,8 +94,10 @@ export default function Home() {
                 setNewTitle={setNewTitle}
                 setNewConcept={setNewConcept}
 
-                ArrangeTasks={ArrangeTasks}
           />
+        <button type ="button" onClick={cancelAdd} style={{marginLeft: "8px"}}>
+        追加取消
+        </button>
         </div>
       )}
       <>
@@ -98,8 +111,6 @@ export default function Home() {
                 setNewDate={setNewDate}
                 setNewTitle={setNewTitle}
                 setNewConcept={setNewConcept}
-
-                ArrangeTasks={ArrangeTasks}
         />
       </>
       {showEditModal && (
@@ -116,7 +127,17 @@ export default function Home() {
               EditConcept={handleEditConcept}
               CancelEdit={cancelEdit}
           />
-        </div>
+          <button type ="button" onClick={() => {
+            if(selectedTask){
+              deleteTask(selectedTask.id);
+              CancelEdit();
+              setShowEditModal(false);
+            }
+          }}
+          style={{marginLeft: "8px"}}>
+          タスク削除
+          </button>
+          </div>
       )}
       <div className="content-layout">
         <TaskList
@@ -129,6 +150,7 @@ export default function Home() {
                 editTitle={editTitle}
                 editConcept={editConcept}
                 editId={editId}
+                editPosition={editPosition}
 
                 setEditDate={setEditDate}
                 setEditTitle={setEditTitle}
@@ -136,6 +158,8 @@ export default function Home() {
 
                 EditConcept={EditConcept}
                 reorderTasks={reorderTasks}
+
+                ArrangeTasks={ArrangeTasks}
         />
         <TaskCalendar
                 tasks={tasks}
@@ -143,6 +167,8 @@ export default function Home() {
                 setNewDate={setNewDate}
                 setShowEditModal={setShowEditModal}
                 setShowAddModal={setShowAddModal}
+                setSelectedTask={setSelectedTask}
+                changeDateCalendar={changeDateCalendar}
         />
       </div>
     </main>

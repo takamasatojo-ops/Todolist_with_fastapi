@@ -16,6 +16,7 @@ type Props = {
   editTitle: string;
   editConcept: string;
   editId: number|null;
+  editPosition: string|null;
 
   setEditDate: (value:string) => void;
   setEditTitle: (value:string) =>void;
@@ -36,6 +37,7 @@ export default function TaskItem({
   editTitle,
   editConcept,
   editId,
+  editPosition,
 
   setEditDate,
   setEditTitle,
@@ -91,8 +93,10 @@ export default function TaskItem({
                 <button onClick={() => startEdit(task)} style={{marginRight: "6px", marginBottom: "12px", }}>
                     内容編集
                 </button>
-                <div className='edit-task' style = {{display: editId === task.id ? "block" : "none"}}>
+                <div className='edit-task' style = {{display: editId === task.id && editPosition === "list" ? "block" : "none"}}>
                     <EditTask
+                        task={task}
+                        deleteTask={deleteTask}
                         editDate={editDate}
                         editTitle={editTitle}
                         editConcept={editConcept}
@@ -105,7 +109,8 @@ export default function TaskItem({
                         CancelEdit={CancelEdit}
                     />
                 </div>
-                <button onClick={() => deleteTask(task.id)} style={{marginBottom: "12px"}}>
+                <button type ="button" onClick={() => deleteTask(task.id)}
+                style={{marginLeft: "8px"}}>
                 タスク削除
                 </button>
             </li>

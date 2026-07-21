@@ -1,4 +1,4 @@
-import React, { useState, useMemo} from "react";
+import React, {useMemo} from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -11,6 +11,8 @@ type Props = {
     setNewDate: (value:string) => void;
     setShowEditModal: (value: boolean) => void;
     setShowAddModal: (value: boolean) => void;
+    setSelectedTask: (task:Task) => void;
+    changeDateCalendar: (id:number, date:string) => void;
 };
 
 export default function TaskCalendar({
@@ -19,6 +21,8 @@ export default function TaskCalendar({
     setNewDate,
     setShowEditModal,
     setShowAddModal,
+    setSelectedTask,
+    changeDateCalendar,
 }:Props) {
 
     const events = useMemo(() => {
@@ -35,6 +39,8 @@ export default function TaskCalendar({
             <div className="demo-app-main" >
                 <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
+                editable={true}
+                selectable={true}
                 headerToolbar={{
                     left: "prev,next today",
                     center: "title",
@@ -55,8 +61,12 @@ export default function TaskCalendar({
 
                     if (task) {
                         startEdit(task);
+                        setSelectedTask(task);
                         setShowEditModal(true);
                     }
+                }}
+                eventDrop={(info)=>{
+                    changeDateCalendar(Number(info.event.id), info.event.startStr)
                 }}
                 height={600}
                 />

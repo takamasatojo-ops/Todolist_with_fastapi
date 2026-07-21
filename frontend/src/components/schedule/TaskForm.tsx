@@ -13,7 +13,6 @@ type Props = {
   setNewTitle: (value:string) => void;
   setNewConcept: (value:string) => void;
 
-  ArrangeTasks: () => void;
 
 };
 
@@ -28,8 +27,6 @@ export default function TaskList({
   setNewDate,
   setNewTitle,
   setNewConcept,
-
-  ArrangeTasks,
 
 }:Props){
 
@@ -59,7 +56,6 @@ export default function TaskList({
                 />
                 <button type = "submit">追加</button>
             </form>
-            <button type = "button" onClick={ArrangeTasks} style = {{marginBottom: "16px"}}>タスクを日付順に入れ替える</button>
         </>
     );
 }

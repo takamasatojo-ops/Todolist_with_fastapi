@@ -1,5 +1,4 @@
 type Props = {
-
   editDate: string;
   editTitle: string;
   editConcept: string;
@@ -13,7 +12,6 @@ type Props = {
 };
 
 export default function EditTask({
-
   editDate,
   editTitle,
   editConcept,

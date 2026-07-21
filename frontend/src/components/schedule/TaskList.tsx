@@ -22,6 +22,7 @@ type Props = {
   editTitle: string;
   editConcept: string;
   editId: number|null;
+  editPosition: string;
 
   setEditDate: (value:string) => void;
   setEditTitle: (value:string) => void;
@@ -30,6 +31,8 @@ type Props = {
   EditConcept: (e: React.SubmitEvent<HTMLFormElement>) =>void;
 
   reorderTasks: (oldIndex: number, newIndex: number) => void;
+
+  ArrangeTasks: () => void;
 
 };
 
@@ -44,6 +47,7 @@ export default function TaskList({
   editTitle,
   editConcept,
   editId,
+  editPosition,
 
   setEditDate,
   setEditTitle,
@@ -52,6 +56,8 @@ export default function TaskList({
   EditConcept,
 
   reorderTasks,
+
+  ArrangeTasks,
 
 }:Props){
 
@@ -86,6 +92,7 @@ export default function TaskList({
   return (
 
   <div className="task-list">
+    <button type = "button" onClick={ArrangeTasks} style = {{marginBottom: "16px"}}>タスクリストを日付順に入れ替える</button>
     <DndContext onDragEnd ={handleDragEnd}>
 
       <SortableContext items={tasks}>
@@ -101,6 +108,7 @@ export default function TaskList({
                 editTitle={editTitle}
                 editConcept={editConcept}
                 editId={editId}
+                editPosition={editPosition}
 
                 setEditDate={setEditDate}
                 setEditTitle={setEditTitle}
