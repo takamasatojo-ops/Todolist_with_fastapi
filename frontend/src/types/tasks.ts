@@ -4,7 +4,9 @@ export type Task = {
   title: string;
   concept: string | null;
   dueDate: string | null;
-  done:boolean
-  taskOrder:number
+  done: boolean
+  taskOrder: number
+  starttime: string | null;
+  endtime: string | null;
 };
 

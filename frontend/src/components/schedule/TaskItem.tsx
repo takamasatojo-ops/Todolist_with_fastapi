@@ -15,16 +15,21 @@ type Props = {
   editDate: string;
   editTitle: string;
   editConcept: string;
+  editStartTime: string;
+  editEndTime: string;
   editId: number|null;
   editPosition: string|null;
 
   setEditDate: (value:string) => void;
   setEditTitle: (value:string) =>void;
   setEditConcept: (value:string) =>void;
+  setEditStartTime: (value:string) =>void;
+  setEditEndTime: (value:string) =>void;
 
   EditConcept: (e: React.SubmitEvent<HTMLFormElement>) =>void;
 
   CancelEdit:() => void;
+  InputResetEdit:() => void;
 };
 
 export default function TaskItem({
@@ -36,15 +41,20 @@ export default function TaskItem({
   editDate,
   editTitle,
   editConcept,
+  editStartTime,
+  editEndTime,
   editId,
   editPosition,
 
   setEditDate,
   setEditTitle,
   setEditConcept,
+  setEditStartTime,
+  setEditEndTime,
 
   EditConcept,
   CancelEdit,
+  InputResetEdit,
 
 }:Props){
 
@@ -69,6 +79,7 @@ export default function TaskItem({
             style={style}
             {...attributes}
             className="task" >
+                <div className='task-main'>
                 <span
                 style = {{marginLeft: "12px"}}
                  {...listeners}>
@@ -86,33 +97,44 @@ export default function TaskItem({
                 <span style={{ marginRight: "8px"}}>
                     {task.dueDate}
                 </span>
+                {(task.starttime || task.endtime) && (
+                    <span style={{ marginRight: "8px"}}>
+                        {task.starttime?.slice(0,5)}
+                        {(task.starttime || task.endtime) && "〜"}
+                        {task.endtime?.slice(0,5)}
+                    </span>
+                )}
                 {task.title}
                 <span style={{color:"rgba(0,0,0,0.5)", margin: "8px"}}>
                     {task.concept}
                 </span>
-                <button onClick={() => startEdit(task)} style={{marginRight: "6px", marginBottom: "12px", }}>
-                    内容編集
+                <button onClick={() => startEdit(task)} style={{marginRight: "6px"}}>
+                    修正
                 </button>
+                <button type ="button" onClick={() => deleteTask(task.id)}
+                style={{margin: "8px", color: "red"}}>
+                削除
+                </button>
+                </div>
                 <div className='edit-task' style = {{display: editId === task.id && editPosition === "list" ? "block" : "none"}}>
                     <EditTask
-                        task={task}
-                        deleteTask={deleteTask}
                         editDate={editDate}
                         editTitle={editTitle}
                         editConcept={editConcept}
+                        editStartTime={editStartTime}
+                        editEndTime={editEndTime}
 
                         setEditDate={setEditDate}
                         setEditTitle={setEditTitle}
                         setEditConcept={setEditConcept}
+                        setEditStartTime={setEditStartTime}
+                        setEditEndTime={setEditEndTime}
 
                         EditConcept={EditConcept}
                         CancelEdit={CancelEdit}
+                        InputResetEdit={InputResetEdit}
                     />
                 </div>
-                <button type ="button" onClick={() => deleteTask(task.id)}
-                style={{marginLeft: "8px"}}>
-                タスク削除
-                </button>
             </li>
   );
 }

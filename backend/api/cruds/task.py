@@ -62,6 +62,8 @@ async def update_task(
     original.concept = task_create.concept
     original.dueDate = task_create.dueDate
     original.done = task_create.done
+    original.starttime = task_create.starttime
+    original.endtime = task_create.endtime
     db.add(original)
     await db.commit()
     await db.refresh(original)

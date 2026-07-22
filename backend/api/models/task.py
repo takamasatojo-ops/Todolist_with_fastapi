@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, Date, Text
+from sqlalchemy import Column, Integer, String, Boolean, Date, Text, Time
 
 from api.db import Base
 
@@ -15,3 +15,6 @@ class Task(Base):
     done = Column(Boolean, default=False)
 
     taskOrder = Column(Integer, default=0)
+    
+    starttime = Column(Time)
+    endtime = Column(Time)

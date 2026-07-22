@@ -23,16 +23,21 @@ type Props = {
   editConcept: string;
   editId: number|null;
   editPosition: string;
+  editStartTime: string;
+  editEndTime: string;
 
   setEditDate: (value:string) => void;
   setEditTitle: (value:string) => void;
   setEditConcept: (value:string) => void;
+  setEditStartTime: (value:string) => void;
+  setEditEndTime: (value:string) => void;
 
   EditConcept: (e: React.SubmitEvent<HTMLFormElement>) =>void;
 
   reorderTasks: (oldIndex: number, newIndex: number) => void;
 
   ArrangeTasks: () => void;
+  InputResetEdit: () => void;
 
 };
 
@@ -46,18 +51,23 @@ export default function TaskList({
   editDate,
   editTitle,
   editConcept,
+  editStartTime,
+  editEndTime,
   editId,
   editPosition,
 
   setEditDate,
   setEditTitle,
   setEditConcept,
+  setEditStartTime,
+  setEditEndTime,
 
   EditConcept,
 
   reorderTasks,
 
   ArrangeTasks,
+  InputResetEdit,
 
 }:Props){
 
@@ -92,7 +102,9 @@ export default function TaskList({
   return (
 
   <div className="task-list">
-    <button type = "button" onClick={ArrangeTasks} style = {{marginBottom: "16px"}}>タスクリストを日付順に入れ替える</button>
+    <div>
+    <button type = "button" onClick={ArrangeTasks} style = {{margin: "8px"}}>タスクリストを日付順に入れ替える</button>
+    </div>
     <DndContext onDragEnd ={handleDragEnd}>
 
       <SortableContext items={tasks}>
@@ -107,14 +119,19 @@ export default function TaskList({
                 editDate={editDate}
                 editTitle={editTitle}
                 editConcept={editConcept}
+                editStartTime={editStartTime}
+                editEndTime={editEndTime}
                 editId={editId}
                 editPosition={editPosition}
 
                 setEditDate={setEditDate}
                 setEditTitle={setEditTitle}
                 setEditConcept={setEditConcept}
+                setEditStartTime={setEditStartTime}
+                setEditEndTime={setEditEndTime}
 
                 EditConcept={EditConcept}
+                InputResetEdit={InputResetEdit}
                 />
 
               ))}

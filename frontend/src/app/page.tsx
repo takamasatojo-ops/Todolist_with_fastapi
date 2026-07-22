@@ -31,15 +31,33 @@ export default function Home() {
         editDate,
         editTitle,
         editPosition,
+        editStartTime,
+        editEndTime,
         newTitle,
         newDate,
         newConcept,
+        newStartTime,
+        newEndTime,
+        newTitleCalendar,
+        newDateCalendar,
+        newConceptCalendar,
+        newStartTimeCalendar,
+        newEndTimeCalendar,
         setEditConcept,
         setEditDate,
         setEditTitle,
+        setEditStartTime,
+        setEditEndTime,
         setNewDate,
         setNewTitle,
         setNewConcept,
+        setNewStartTime,
+        setNewEndTime,
+        setNewDateCalendar,
+        setNewTitleCalendar,
+        setNewConceptCalendar,
+        setNewStartTimeCalendar,
+        setNewEndTimeCalendar,
         deleteTask,
         turnCheck,
         startEdit,
@@ -47,25 +65,68 @@ export default function Home() {
         CancelEdit,
         EditConcept,
         AddTask,
+        AddTaskCalendar,
         ArrangeTasks,
         reorderTasks,
         changeDateCalendar,
+        InputResetEdit,
+        InputResetAdd,
+        InputResetAddCalendar,
   } =useTasks()
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showWarningTimeModal, setShowWarningTimeModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task |null>(null);
 
   const handleEditConcept = async (
     e: React.SubmitEvent<HTMLFormElement>) => {
-      await EditConcept(e);
+      const result = await EditConcept(e);
+
+      if (result==="task"){
+      setShowWarningModal(true);
+      return;
+      }
+
+      if (result==="time"){
+        setShowWarningTimeModal(true);
+        return;
+      }
 
       setShowEditModal(false);
     };
 
   const handleAddTask = async (
     e: React.SubmitEvent<HTMLFormElement>) => {
-      await AddTask(e);
+      const result = await AddTask(e);
+
+    if (result==="task"){
+    setShowWarningModal(true);
+    return;
+    }
+
+    if (result==="time"){
+      setShowWarningTimeModal(true);
+      return;
+    }
+
+      setShowAddModal(false);
+    };
+
+  const handleAddTaskCalendar = async (
+    e: React.SubmitEvent<HTMLFormElement>) => {
+      const result = await AddTaskCalendar(e);
+
+    if (result==="task"){
+    setShowWarningModal(true);
+    return;
+    }
+
+    if (result==="time"){
+      setShowWarningTimeModal(true);
+      return;
+    }
 
       setShowAddModal(false);
     };
@@ -85,32 +146,44 @@ export default function Home() {
         <div className="add">
           <TaskForm
                 tasks={tasks}
-                AddTask={handleAddTask}
-                newDate={newDate}
-                newTitle={newTitle}
-                newConcept={newConcept}
+                AddTask={handleAddTaskCalendar}
+                newDate={newDateCalendar}
+                newTitle={newTitleCalendar}
+                newConcept={newConceptCalendar}
+                newStartTime={newStartTimeCalendar}
+                newEndTime={newEndTimeCalendar}
 
-                setNewDate={setNewDate}
-                setNewTitle={setNewTitle}
-                setNewConcept={setNewConcept}
+                setNewDate={setNewDateCalendar}
+                setNewTitle={setNewTitleCalendar}
+                setNewConcept={setNewConceptCalendar}
+                setNewStartTime={setNewStartTimeCalendar}
+                setNewEndTime={setNewEndTimeCalendar}
+                InputResetAdd={InputResetAddCalendar}
 
           />
         <button type ="button" onClick={cancelAdd} style={{marginLeft: "8px"}}>
-        追加取消
+        追加を取消
         </button>
         </div>
       )}
       <>
         <TaskForm
                 tasks={tasks}
-                AddTask={AddTask}
+                AddTask={handleAddTask}
                 newDate={newDate}
                 newTitle={newTitle}
                 newConcept={newConcept}
+                newStartTime={newStartTime}
+                newEndTime={newEndTime}
 
                 setNewDate={setNewDate}
                 setNewTitle={setNewTitle}
                 setNewConcept={setNewConcept}
+                setNewStartTime={setNewStartTime}
+                setNewEndTime={setNewEndTime}
+
+                InputResetAdd={InputResetAdd}
+
         />
       </>
       {showEditModal && (
@@ -119,13 +192,18 @@ export default function Home() {
               editDate={editDate}
               editTitle={editTitle}
               editConcept={editConcept}
+              editStartTime={editStartTime}
+              editEndTime={editEndTime}
 
               setEditDate={setEditDate}
               setEditTitle={setEditTitle}
               setEditConcept={setEditConcept}
+              setEditStartTime={setEditStartTime}
+              setEditEndTime={setEditEndTime}
 
               EditConcept={handleEditConcept}
               CancelEdit={cancelEdit}
+              InputResetEdit={InputResetEdit}
           />
           <button type ="button" onClick={() => {
             if(selectedTask){
@@ -134,11 +212,35 @@ export default function Home() {
               setShowEditModal(false);
             }
           }}
-          style={{marginLeft: "8px"}}>
-          タスク削除
+          style={{marginLeft: "8px", color: "red", fontWeight: "bold"}}>
+          削除
           </button>
           </div>
       )}
+        {showWarningModal && (
+        <div className="warning">
+          <div>タスクと日付は両方とも入力してください</div>
+          <button type = "button" onClick={() => {
+            {
+              setShowWarningModal(false);
+            }
+          }}>
+            OK
+          </button>
+        </div>
+        )}
+        {showWarningTimeModal && (
+          <div className="warning-time">
+            <div>終了時刻は開始時刻よりも後の時間にしてください</div>
+          <button type = "button" onClick={() => {
+            {
+              setShowWarningTimeModal(false);
+            }
+          }}>
+            OK
+          </button>
+        </div>
+        )}
       <div className="content-layout">
         <TaskList
                 tasks={tasks}
@@ -149,22 +251,27 @@ export default function Home() {
                 editDate={editDate}
                 editTitle={editTitle}
                 editConcept={editConcept}
+                editStartTime={editStartTime}
+                editEndTime={editEndTime}
                 editId={editId}
                 editPosition={editPosition}
 
                 setEditDate={setEditDate}
                 setEditTitle={setEditTitle}
                 setEditConcept={setEditConcept}
+                setEditStartTime={setEditStartTime}
+                setEditEndTime={setEditEndTime}
 
-                EditConcept={EditConcept}
+                EditConcept={handleEditConcept}
                 reorderTasks={reorderTasks}
 
                 ArrangeTasks={ArrangeTasks}
+                InputResetEdit={InputResetEdit}
         />
         <TaskCalendar
                 tasks={tasks}
                 startEdit={startCalendarEdit}
-                setNewDate={setNewDate}
+                setNewDate={setNewDateCalendar}
                 setShowEditModal={setShowEditModal}
                 setShowAddModal={setShowAddModal}
                 setSelectedTask={setSelectedTask}

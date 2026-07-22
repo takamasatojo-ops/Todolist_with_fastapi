@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, time
 from typing import Optional
 
 from pydantic import BaseModel
@@ -8,6 +8,8 @@ class TaskBase(BaseModel):
     title: str
     concept: Optional[str] = None
     dueDate: Optional[date] = None
+    starttime: Optional[time] = None
+    endtime: Optional[time] = None
 
 
 class TaskCreate(TaskBase):

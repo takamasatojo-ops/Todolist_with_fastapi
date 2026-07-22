@@ -10,10 +10,19 @@ export function useTasks(){
   const [editConcept, setEditConcept] = useState("");
   const [editTitle, setEditTitle] = useState("");
   const [editDate, setEditDate] = useState("");
+  const [editStartTime, setEditStartTime] = useState("");
+  const [editEndTime, setEditEndTime] = useState("");
   const [editPosition, setEditPosition] = useState("");
   const [newConcept, setNewConcept] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newDate, setNewDate] = useState("");
+  const [newStartTime, setNewStartTime] = useState("");
+  const [newEndTime, setNewEndTime] = useState("");
+  const [newConceptCalendar, setNewConceptCalendar] = useState("");
+  const [newTitleCalendar, setNewTitleCalendar] = useState("");
+  const [newDateCalendar, setNewDateCalendar] = useState("");
+  const [newStartTimeCalendar, setNewStartTimeCalendar] = useState("");
+  const [newEndTimeCalendar, setNewEndTimeCalendar] = useState("");
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -34,6 +43,8 @@ export function useTasks(){
         dueDate: task.dueDate,
         done: task.done,
         taskOrder: task.taskOrder,
+        starttime: task.starttime,
+        endtime: task.endtime,
       }))
 
       setTasks(formattedTasks);
@@ -159,6 +170,8 @@ export function useTasks(){
             dueDate: task.dueDate,
             title: task.title,
             concept: task.concept,
+            starttime: task.starttime,
+            endtime: task.endtime,
             done: !task.done,
             taskOrder: task.taskOrder
           }),
@@ -184,6 +197,8 @@ export function useTasks(){
     setEditTitle(task.title)
     setEditConcept(task.concept ?? "")
     setEditDate(task.dueDate ?? "")
+    setEditStartTime(task.starttime ?? "")
+    setEditEndTime(task.endtime ?? "")
     setEditPosition("list")
   }
 
@@ -192,6 +207,8 @@ export function useTasks(){
     setEditTitle(task.title)
     setEditConcept(task.concept ?? "")
     setEditDate(task.dueDate ?? "")
+    setEditStartTime(task.starttime ?? "")
+    setEditEndTime(task.endtime ?? "")
     setEditPosition("calender")
   }
 
@@ -200,13 +217,49 @@ export function useTasks(){
     setEditConcept("")
     setEditDate("")
     setEditTitle("")
+    setEditStartTime("")
+    setEditEndTime("")
+  }
+
+  const InputResetEdit = () => {
+    setEditConcept("")
+    setEditDate("")
+    setEditTitle("")
+    setEditStartTime("")
+    setEditEndTime("")
+  }
+
+  const InputResetAdd = () => {
+    setNewDate("");
+    setNewTitle("");
+    setNewConcept("");
+    setNewStartTime("");
+    setNewEndTime("");
+  }
+
+  const InputResetAddCalendar = () => {
+    setNewDateCalendar("");
+    setNewTitleCalendar("");
+    setNewConceptCalendar("");
+    setNewStartTimeCalendar("");
+    setNewEndTimeCalendar("");
   }
 
   const EditConcept = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!editTitle.trim()) return;
-    if (!editDate.trim()) return;
+    if (!editTitle.trim()) {
+      return "task";
+    };
+
+    if (!editDate.trim()) {
+      return "task";
+    };
+
+    if ((editStartTime.trim() && editEndTime.trim()) && (editStartTime>editEndTime)) {
+      return "time";
+    }
+    
     if (editId===null) return;
 
       const res = await fetch(
@@ -220,6 +273,8 @@ export function useTasks(){
             dueDate: editDate.trim(),
             title: editTitle.trim(),
             concept: editConcept.trim(),
+            starttime: editStartTime.trim() || null,
+            endtime: editEndTime.trim() || null,
             done: false,
             taskOrder: 0
           }),
@@ -240,6 +295,8 @@ export function useTasks(){
         title: editTask.title,
         dueDate: editTask.dueDate,
         concept: editTask.concept,
+        starttime: editTask.starttime,
+        endtime: editTask.endtime,
         done: editTask.done,
         taskOrder: editTask.taskOrder
         }: task
@@ -250,14 +307,24 @@ export function useTasks(){
     setEditConcept("");
     setEditDate("");
     setEditTitle("")
+    setEditStartTime("")
+    setEditEndTime("")
   };
 
   //フォーム送信時に呼び出される関数
   const AddTask = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!newTitle.trim()) return;
-    if (!newDate.trim()) return;
+    if (!newTitle.trim()) {
+      return "task";
+    }
+    if (!newDate.trim()) {
+      return "task";
+    }
+
+    if ((newStartTime.trim() && newEndTime.trim()) && (newStartTime>newEndTime)) {
+      return "time";
+    }
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/tasks`,
@@ -270,6 +337,8 @@ export function useTasks(){
             dueDate: newDate.trim(),
             title: newTitle.trim(),
             concept: newConcept.trim(),
+            starttime: newStartTime.trim() || null,
+            endtime: newEndTime.trim() || null,
             done: false,
             taskOrder: tasks.length
           }),
@@ -287,6 +356,8 @@ export function useTasks(){
         title: newTask.title,
         dueDate: newTask.dueDate,
         concept: newTask.concept,
+        starttime: newTask.starttime,
+        endtime: newTask.endtime,
         done: newTask.done,
         taskOrder: newTask.taskOrder
       };
@@ -296,7 +367,68 @@ export function useTasks(){
     setNewDate("");
     setNewTitle("");
     setNewConcept("");
-    setEditPosition("");
+    setNewStartTime("");
+    setNewEndTime("");
+  };
+
+  const AddTaskCalendar = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!newTitleCalendar.trim()) {
+      return "task";
+    }
+    if (!newDateCalendar.trim()) {
+      return "task";
+    }
+
+
+    if ((newStartTimeCalendar.trim() && newEndTimeCalendar.trim()) && (newStartTimeCalendar>newEndTimeCalendar)) {
+      return "time";
+    }
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            dueDate: newDateCalendar.trim(),
+            title: newTitleCalendar.trim(),
+            concept: newConceptCalendar.trim(),
+            starttime: newStartTimeCalendar.trim() || null,
+            endtime: newEndTimeCalendar.trim() || null,
+            done: false,
+            taskOrder: tasks.length
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("タスク追加に失敗しました");
+      }
+
+      const newTask:Task = await res.json();
+
+      const formattedTask:Task = {
+        id: newTask.id,
+        title: newTask.title,
+        dueDate: newTask.dueDate,
+        concept: newTask.concept,
+        starttime: newTask.starttime,
+        endtime: newTask. endtime,
+        done: newTask.done,
+        taskOrder: newTask.taskOrder
+      };
+
+    setTasks((prev) => [...prev, formattedTask]);
+
+    setNewDateCalendar("");
+    setNewTitleCalendar("");
+    setNewConceptCalendar("");
+    setNewStartTimeCalendar("");
+    setNewEndTimeCalendar("");
   };
 
   const changeDateCalendar = async (
@@ -321,6 +453,8 @@ export function useTasks(){
             dueDate: date,
             title: task.title,
             concept: task.concept,
+            starttime: task.starttime,
+            endtime: task.endtime,
             done: task.done,
             taskOrder: task.taskOrder
           }),
@@ -346,15 +480,33 @@ export function useTasks(){
         editTitle,
         editDate,
         editPosition,
+        editStartTime,
+        editEndTime,
         newTitle,
         newDate,
         newConcept,
+        newStartTime,
+        newEndTime,
+        newTitleCalendar,
+        newDateCalendar,
+        newConceptCalendar,
+        newStartTimeCalendar,
+        newEndTimeCalendar,
         setEditConcept,
         setEditDate,
         setEditTitle,
+        setEditStartTime,
+        setEditEndTime,
         setNewDate,
         setNewTitle,
         setNewConcept,
+        setNewStartTime,
+        setNewEndTime,
+        setNewDateCalendar,
+        setNewTitleCalendar,
+        setNewConceptCalendar,
+        setNewStartTimeCalendar,
+        setNewEndTimeCalendar,
         deleteTask,
         turnCheck,
         startEdit,
@@ -362,8 +514,12 @@ export function useTasks(){
         CancelEdit,
         EditConcept,
         AddTask,
+        AddTaskCalendar,
         ArrangeTasks,
         reorderTasks,
         changeDateCalendar,
+        InputResetEdit,
+        InputResetAdd,
+        InputResetAddCalendar,
     };
 }
