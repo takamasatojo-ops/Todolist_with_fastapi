@@ -40,8 +40,6 @@ type Props = {
 
   ArrangeTasks: () => void;
   InputResetEdit: () => void;
-
-  MultiDay: boolean;
 };
 
 export default function TaskList({
@@ -73,8 +71,6 @@ export default function TaskList({
 
   ArrangeTasks,
   InputResetEdit,
-
-  MultiDay,
 
 }:Props){
 
@@ -141,8 +137,6 @@ export default function TaskList({
 
                 EditConcept={EditConcept}
                 InputResetEdit={InputResetEdit}
-
-                MultiDay={MultiDay}
                 />
 
               ))}

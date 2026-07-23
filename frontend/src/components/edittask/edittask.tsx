@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from "react";
+import React, {useState } from "react";
 
 type Props = {
   editDueDate: string;
@@ -42,19 +42,16 @@ export default function EditTask({
 
 }:Props){
 
-  const [MultiDay, setMultiDay] = useState(false);
+  const [multiDay, setMultiDay] =   useState<false|true>(
+    editStartDate !== editDueDate
+      ? true
+      : false
+  );
 
-  useEffect(()=> {
-    setMultiDay(!!editDueDate && !!editStartDate && (editStartDate !== editDueDate))
-    },
-  [editStartDate, editDueDate]);
-
-    console.log(editDueDate);
-  console.log(editStartDate);
 
   return (
     <>
-    {MultiDay && (
+    {(multiDay === true )&& (
     <form onSubmit = {EditConcept} style = {{marginBottom: "16px" }}>
         <input
             type = "date"
@@ -110,7 +107,7 @@ export default function EditTask({
                 </span>
                 <input
                     type = "checkbox"
-                    checked = {MultiDay}
+                    checked = {true}
                     onChange = {() => {setMultiDay(false); setEditDueDate(editStartDate)}}
                     style = {{marginLeft: "4px"}}
                 />
@@ -119,7 +116,7 @@ export default function EditTask({
         </button>
     </form>
     )}
-    {!MultiDay && (
+    {(multiDay ===false ) && (
     <form onSubmit = {EditConcept} style = {{marginBottom: "16px" }}>
         <input
             type = "date"
@@ -168,7 +165,7 @@ export default function EditTask({
                 </span>
                 <input
                     type = "checkbox"
-                    checked = {MultiDay}
+                    checked = {false}
                     onChange = {() => {setMultiDay(true)}}
                     style = {{marginLeft: "4px"}}
                 />
