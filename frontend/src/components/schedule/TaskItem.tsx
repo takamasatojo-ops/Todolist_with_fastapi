@@ -12,7 +12,8 @@ type Props = {
   startEdit: (task:Task) => void;
   deleteTask: (id:number) => void;
 
-  editDate: string;
+  editDueDate: string;
+  editStartDate: string;
   editTitle: string;
   editConcept: string;
   editStartTime: string;
@@ -20,7 +21,8 @@ type Props = {
   editId: number|null;
   editPosition: string|null;
 
-  setEditDate: (value:string) => void;
+  setEditDueDate: (value:string) => void;
+  setEditStartDate: (value:string) => void;
   setEditTitle: (value:string) =>void;
   setEditConcept: (value:string) =>void;
   setEditStartTime: (value:string) =>void;
@@ -38,7 +40,8 @@ export default function TaskItem({
     startEdit,
     deleteTask,
 
-  editDate,
+  editDueDate,
+  editStartDate,
   editTitle,
   editConcept,
   editStartTime,
@@ -46,7 +49,8 @@ export default function TaskItem({
   editId,
   editPosition,
 
-  setEditDate,
+  setEditDueDate,
+  setEditStartDate,
   setEditTitle,
   setEditConcept,
   setEditStartTime,
@@ -82,7 +86,7 @@ export default function TaskItem({
                 <div className='task-main'>
                 <span
                 style = {{marginLeft: "12px"}}
-                 {...listeners}>
+                {...listeners}>
                     ≡
                 </span>
                 <input
@@ -94,21 +98,32 @@ export default function TaskItem({
                 <span style={{ marginRight: "8px"}}>
                 {task.done ? "完了✅" : "未完了"}
                 </span>
-                <span style={{ marginRight: "8px"}}>
-                    {task.dueDate}
+                <span style={{ marginRight: "4px"}}>
+                    {task.startDate}
                 </span>
-                {(task.starttime || task.endtime) && (
-                    <span style={{ marginRight: "8px"}}>
-                        {task.starttime?.slice(0,5)}
-                        {(task.starttime || task.endtime) && "〜"}
-                        {task.endtime?.slice(0,5)}
-                    </span>
+                {(task.starttime || task.endtime || task.dueDate) && (
+                    <>
+                        <span style={{ marginRight: "4px"}}>
+                            {task.starttime?.slice(0,5)}
+                        </span>
+                        <span style={{ marginRight: "4px"}}>
+                            〜
+                        </span>
+                        <span style={{ marginRight: "4px"}}>
+                            {task.dueDate}
+                        </span>
+                        <span style={{ marginRight: "4px"}}>
+                            {task.endtime?.slice(0,5)}
+                        </span>
+                    </>
                 )}
+                <span style={{marginLeft:"8px"}}>
                 {task.title}
+                </span>
                 <span style={{color:"rgba(0,0,0,0.5)", margin: "8px"}}>
                     {task.concept}
                 </span>
-                <button onClick={() => startEdit(task)} style={{marginRight: "6px"}}>
+                <button onClick={() => startEdit(task)} style={{marginRight: "4px"}}>
                     修正
                 </button>
                 <button type ="button" onClick={() => deleteTask(task.id)}
@@ -118,13 +133,15 @@ export default function TaskItem({
                 </div>
                 <div className='edit-task' style = {{display: editId === task.id && editPosition === "list" ? "block" : "none"}}>
                     <EditTask
-                        editDate={editDate}
+                        editDueDate={editDueDate}
+                        editStartDate={editStartDate}
                         editTitle={editTitle}
                         editConcept={editConcept}
                         editStartTime={editStartTime}
                         editEndTime={editEndTime}
 
-                        setEditDate={setEditDate}
+                        setEditDueDate={setEditDueDate}
+                        setEditStartDate={setEditStartDate}
                         setEditTitle={setEditTitle}
                         setEditConcept={setEditConcept}
                         setEditStartTime={setEditStartTime}

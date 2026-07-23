@@ -8,17 +8,19 @@ import { Task } from "@/types/tasks";
 type Props = {
     tasks: Task[];
     startEdit: (task:Task) => void;
-    setNewDate: (value:string) => void;
+    setNewDueDate: (value:string) => void;
+    setNewStartDate: (value:string) => void;
     setShowEditModal: (value: boolean) => void;
     setShowAddModal: (value: boolean) => void;
     setSelectedTask: (task:Task) => void;
-    changeDateCalendar: (id:number, date:string) => void;
+    changeDateCalendar: (id:number, startDate:string, dueDate:string) => void;
 };
 
 export default function TaskCalendar({
     tasks,
     startEdit,
-    setNewDate,
+    setNewDueDate,
+    setNewStartDate,
     setShowEditModal,
     setShowAddModal,
     setSelectedTask,
@@ -26,11 +28,30 @@ export default function TaskCalendar({
 }:Props) {
 
     const events = useMemo(() => {
-        return tasks.map((task) => ({
+        const AddDay = (setDay: string) => {
+            const CalendarDate = new Date(setDay);
+            CalendarDate.setDate(CalendarDate.getDate()+1);
+
+        return CalendarDate.toISOString().split("T")[0];
+        };
+
+        return tasks.map((task) => {
+            if (task.dueDate){
+
+            return {
+            id: String(task.id),
+            title: task.title,
+            start: task.startDate,
+            end: AddDay(task.dueDate),
+                }
+            }
+        return {
         id: String(task.id),
         title: task.title,
-        start: task.dueDate,
-      }));
+        start: task.startDate,
+        }
+
+      });
      }, [tasks]);
 
 
@@ -49,7 +70,7 @@ export default function TaskCalendar({
                 initialView="dayGridMonth"
                 dateClick={(info)=>{
                     if (info.dateStr) {
-                        setNewDate(info.dateStr);
+                        setNewStartDate(info.dateStr);
                         setShowAddModal(true);
                     }
                 }}
@@ -66,7 +87,7 @@ export default function TaskCalendar({
                     }
                 }}
                 eventDrop={(info)=>{
-                    changeDateCalendar(Number(info.event.id), info.event.startStr)
+                    changeDateCalendar(Number(info.event.id), info.event.startStr, info.event.endStr)
                 }}
                 height={600}
                 />

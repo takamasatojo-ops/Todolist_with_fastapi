@@ -28,32 +28,38 @@ export default function Home() {
         tasks,
         editId,
         editConcept,
-        editDate,
+        editDueDate,
+        editStartDate,
         editTitle,
         editPosition,
         editStartTime,
         editEndTime,
         newTitle,
-        newDate,
+        newDueDate,
+        newStartDate,
         newConcept,
         newStartTime,
         newEndTime,
         newTitleCalendar,
-        newDateCalendar,
+        newDueDateCalendar,
+        newStartDateCalendar,
         newConceptCalendar,
         newStartTimeCalendar,
         newEndTimeCalendar,
         setEditConcept,
-        setEditDate,
+        setEditDueDate,
+        setNewStartDate,
         setEditTitle,
         setEditStartTime,
         setEditEndTime,
-        setNewDate,
+        setNewDueDate,
+        setEditStartDate,
         setNewTitle,
         setNewConcept,
         setNewStartTime,
         setNewEndTime,
-        setNewDateCalendar,
+        setNewDueDateCalendar,
+        setNewStartDateCalendar,
         setNewTitleCalendar,
         setNewConceptCalendar,
         setNewStartTimeCalendar,
@@ -147,13 +153,15 @@ export default function Home() {
           <TaskForm
                 tasks={tasks}
                 AddTask={handleAddTaskCalendar}
-                newDate={newDateCalendar}
+                newDueDate={newDueDateCalendar}
+                newStartDate={newStartDateCalendar}
                 newTitle={newTitleCalendar}
                 newConcept={newConceptCalendar}
                 newStartTime={newStartTimeCalendar}
                 newEndTime={newEndTimeCalendar}
 
-                setNewDate={setNewDateCalendar}
+                setNewDueDate={setNewDueDateCalendar}
+                setNewStartDate={setNewStartDateCalendar}
                 setNewTitle={setNewTitleCalendar}
                 setNewConcept={setNewConceptCalendar}
                 setNewStartTime={setNewStartTimeCalendar}
@@ -170,13 +178,15 @@ export default function Home() {
         <TaskForm
                 tasks={tasks}
                 AddTask={handleAddTask}
-                newDate={newDate}
+                newDueDate={newDueDate}
+                newStartDate={newStartDate}
                 newTitle={newTitle}
                 newConcept={newConcept}
                 newStartTime={newStartTime}
                 newEndTime={newEndTime}
 
-                setNewDate={setNewDate}
+                setNewDueDate={setNewDueDate}
+                setNewStartDate={setNewStartDate}
                 setNewTitle={setNewTitle}
                 setNewConcept={setNewConcept}
                 setNewStartTime={setNewStartTime}
@@ -189,13 +199,15 @@ export default function Home() {
       {showEditModal && (
         <div className="modal">
           <TaskEdit
-              editDate={editDate}
+              editDueDate={editDueDate}
+              editStartDate={editStartDate}
               editTitle={editTitle}
               editConcept={editConcept}
               editStartTime={editStartTime}
               editEndTime={editEndTime}
 
-              setEditDate={setEditDate}
+              setEditDueDate={setEditDueDate}
+              setEditStartDate={setEditStartDate}
               setEditTitle={setEditTitle}
               setEditConcept={setEditConcept}
               setEditStartTime={setEditStartTime}
@@ -231,7 +243,7 @@ export default function Home() {
         )}
         {showWarningTimeModal && (
           <div className="warning-time">
-            <div>終了時刻は開始時刻よりも後の時間にしてください</div>
+            <div>終了日時は開始日時よりも後の時間にしてください</div>
           <button type = "button" onClick={() => {
             {
               setShowWarningTimeModal(false);
@@ -248,7 +260,8 @@ export default function Home() {
                 startEdit={startEdit}
                 CancelEdit={CancelEdit}
                 deleteTask={deleteTask}
-                editDate={editDate}
+                editDueDate={editDueDate}
+                editStartDate={editStartDate}
                 editTitle={editTitle}
                 editConcept={editConcept}
                 editStartTime={editStartTime}
@@ -256,7 +269,8 @@ export default function Home() {
                 editId={editId}
                 editPosition={editPosition}
 
-                setEditDate={setEditDate}
+                setEditDueDate={setEditDueDate}
+                setEditStartDate={setEditStartDate}
                 setEditTitle={setEditTitle}
                 setEditConcept={setEditConcept}
                 setEditStartTime={setEditStartTime}
@@ -271,7 +285,8 @@ export default function Home() {
         <TaskCalendar
                 tasks={tasks}
                 startEdit={startCalendarEdit}
-                setNewDate={setNewDateCalendar}
+                setNewDueDate={setNewDueDateCalendar}
+                setNewStartDate={setNewStartDateCalendar}
                 setShowEditModal={setShowEditModal}
                 setShowAddModal={setShowAddModal}
                 setSelectedTask={setSelectedTask}

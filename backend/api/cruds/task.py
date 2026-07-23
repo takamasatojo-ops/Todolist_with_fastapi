@@ -60,6 +60,7 @@ async def update_task(
 ) -> task_model.Task:
     original.title = task_create.title
     original.concept = task_create.concept
+    original.startDate = task_create.startDate
     original.dueDate = task_create.dueDate
     original.done = task_create.done
     original.starttime = task_create.starttime

@@ -9,18 +9,21 @@ export function useTasks(){
   const [editId, setEditId] = useState<number | null>(null);
   const [editConcept, setEditConcept] = useState("");
   const [editTitle, setEditTitle] = useState("");
-  const [editDate, setEditDate] = useState("");
+  const [editStartDate, setEditStartDate] = useState("");
+  const [editDueDate, setEditDueDate] = useState("");
   const [editStartTime, setEditStartTime] = useState("");
   const [editEndTime, setEditEndTime] = useState("");
   const [editPosition, setEditPosition] = useState("");
   const [newConcept, setNewConcept] = useState("");
   const [newTitle, setNewTitle] = useState("");
-  const [newDate, setNewDate] = useState("");
+  const [newStartDate, setNewStartDate] = useState("");
+  const [newDueDate, setNewDueDate] = useState("");
   const [newStartTime, setNewStartTime] = useState("");
   const [newEndTime, setNewEndTime] = useState("");
   const [newConceptCalendar, setNewConceptCalendar] = useState("");
   const [newTitleCalendar, setNewTitleCalendar] = useState("");
-  const [newDateCalendar, setNewDateCalendar] = useState("");
+  const [newStartDateCalendar, setNewStartDateCalendar] = useState("");
+  const [newDueDateCalendar, setNewDueDateCalendar] = useState("");
   const [newStartTimeCalendar, setNewStartTimeCalendar] = useState("");
   const [newEndTimeCalendar, setNewEndTimeCalendar] = useState("");
 
@@ -40,6 +43,7 @@ export function useTasks(){
         id: task.id,
         title: task.title,
         concept: task.concept,
+        startDate: task.startDate,
         dueDate: task.dueDate,
         done: task.done,
         taskOrder: task.taskOrder,
@@ -100,7 +104,7 @@ export function useTasks(){
   const ArrangeTasks = async() => {
 
       const sortedTasks: Task[] = [...tasks].sort((a, b) =>
-      a.dueDate.localeCompare(b.dueDate)
+      a.startDate.localeCompare(b.startDate)
       );
 
       const updatedTasks: Task[] = sortedTasks.map((task, index) => ({
@@ -167,6 +171,7 @@ export function useTasks(){
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            startDate: task.startDate,
             dueDate: task.dueDate,
             title: task.title,
             concept: task.concept,
@@ -196,7 +201,8 @@ export function useTasks(){
     setEditId(task.id)
     setEditTitle(task.title)
     setEditConcept(task.concept ?? "")
-    setEditDate(task.dueDate ?? "")
+    setEditStartDate(task.startDate ?? "")
+    setEditDueDate(task.dueDate ?? "")
     setEditStartTime(task.starttime ?? "")
     setEditEndTime(task.endtime ?? "")
     setEditPosition("list")
@@ -206,7 +212,8 @@ export function useTasks(){
     setEditId(task.id)
     setEditTitle(task.title)
     setEditConcept(task.concept ?? "")
-    setEditDate(task.dueDate ?? "")
+    setEditStartDate(task.startDate ?? "")
+    setEditDueDate(task.dueDate ?? "")
     setEditStartTime(task.starttime ?? "")
     setEditEndTime(task.endtime ?? "")
     setEditPosition("calender")
@@ -215,7 +222,8 @@ export function useTasks(){
   const CancelEdit = () => {
     setEditId(null)
     setEditConcept("")
-    setEditDate("")
+    setEditStartDate("")
+    setEditDueDate("")
     setEditTitle("")
     setEditStartTime("")
     setEditEndTime("")
@@ -223,14 +231,16 @@ export function useTasks(){
 
   const InputResetEdit = () => {
     setEditConcept("")
-    setEditDate("")
+    setEditStartDate("")
+    setEditDueDate("")
     setEditTitle("")
     setEditStartTime("")
     setEditEndTime("")
   }
 
   const InputResetAdd = () => {
-    setNewDate("");
+    setNewStartDate("");
+    setNewDueDate("");
     setNewTitle("");
     setNewConcept("");
     setNewStartTime("");
@@ -238,7 +248,8 @@ export function useTasks(){
   }
 
   const InputResetAddCalendar = () => {
-    setNewDateCalendar("");
+    setNewStartDateCalendar("");
+    setNewDueDateCalendar("");
     setNewTitleCalendar("");
     setNewConceptCalendar("");
     setNewStartTimeCalendar("");
@@ -252,11 +263,12 @@ export function useTasks(){
       return "task";
     };
 
-    if (!editDate.trim()) {
+    if (!editStartDate.trim()) {
       return "task";
     };
 
-    if ((editStartTime.trim() && editEndTime.trim()) && (editStartTime>editEndTime)) {
+    if ((editStartTime.trim() && editEndTime.trim() && !editDueDate.trim()) && (editStartTime>editEndTime) 
+      || (editDueDate.trim() && (editStartDate>editDueDate))) {
       return "time";
     }
     
@@ -270,7 +282,8 @@ export function useTasks(){
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            dueDate: editDate.trim(),
+            startDate: editStartDate.trim(),
+            dueDate: editDueDate.trim() || null,
             title: editTitle.trim(),
             concept: editConcept.trim(),
             starttime: editStartTime.trim() || null,
@@ -293,6 +306,7 @@ export function useTasks(){
             ? {
         id: editTask.id,
         title: editTask.title,
+        startDate: editTask.startDate,
         dueDate: editTask.dueDate,
         concept: editTask.concept,
         starttime: editTask.starttime,
@@ -305,7 +319,8 @@ export function useTasks(){
 
     setEditId(null);
     setEditConcept("");
-    setEditDate("");
+    setEditStartDate("");
+    setEditDueDate("")
     setEditTitle("")
     setEditStartTime("")
     setEditEndTime("")
@@ -318,11 +333,12 @@ export function useTasks(){
     if (!newTitle.trim()) {
       return "task";
     }
-    if (!newDate.trim()) {
+    if (!newStartDate.trim()) {
       return "task";
     }
 
-    if ((newStartTime.trim() && newEndTime.trim()) && (newStartTime>newEndTime)) {
+    if ((newStartTime.trim() && newEndTime.trim() && !newDueDate.trim()) && (newStartTime>newEndTime) 
+      || (newDueDate.trim() && (newStartDate>newDueDate))) {
       return "time";
     }
 
@@ -334,7 +350,8 @@ export function useTasks(){
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            dueDate: newDate.trim(),
+            startDate: newStartDate.trim() ,
+            dueDate: newDueDate.trim()|| null,
             title: newTitle.trim(),
             concept: newConcept.trim(),
             starttime: newStartTime.trim() || null,
@@ -354,6 +371,7 @@ export function useTasks(){
       const formattedTask:Task = {
         id: newTask.id,
         title: newTask.title,
+        startDate: newTask.startDate,
         dueDate: newTask.dueDate,
         concept: newTask.concept,
         starttime: newTask.starttime,
@@ -364,7 +382,8 @@ export function useTasks(){
 
     setTasks((prev) => [...prev, formattedTask]);
 
-    setNewDate("");
+    setNewStartDate("");
+    setNewDueDate("");
     setNewTitle("");
     setNewConcept("");
     setNewStartTime("");
@@ -377,12 +396,13 @@ export function useTasks(){
     if (!newTitleCalendar.trim()) {
       return "task";
     }
-    if (!newDateCalendar.trim()) {
+    if (!newStartDateCalendar.trim()) {
       return "task";
     }
 
 
-    if ((newStartTimeCalendar.trim() && newEndTimeCalendar.trim()) && (newStartTimeCalendar>newEndTimeCalendar)) {
+    if ((newStartTimeCalendar.trim() && newEndTimeCalendar.trim() && !newDueDateCalendar.trim()) && (newStartTimeCalendar>newEndTimeCalendar) 
+      || (newDueDateCalendar.trim() && (newStartDateCalendar>newDueDateCalendar))) {
       return "time";
     }
 
@@ -394,7 +414,8 @@ export function useTasks(){
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            dueDate: newDateCalendar.trim(),
+            startDate: newStartDateCalendar.trim(),
+            dueDate: newDueDateCalendar.trim()|| null,
             title: newTitleCalendar.trim(),
             concept: newConceptCalendar.trim(),
             starttime: newStartTimeCalendar.trim() || null,
@@ -414,6 +435,7 @@ export function useTasks(){
       const formattedTask:Task = {
         id: newTask.id,
         title: newTask.title,
+        startDate: newTask.startDate,
         dueDate: newTask.dueDate,
         concept: newTask.concept,
         starttime: newTask.starttime,
@@ -424,7 +446,8 @@ export function useTasks(){
 
     setTasks((prev) => [...prev, formattedTask]);
 
-    setNewDateCalendar("");
+    setNewStartDateCalendar("");
+    setNewDueDateCalendar("");
     setNewTitleCalendar("");
     setNewConceptCalendar("");
     setNewStartTimeCalendar("");
@@ -433,12 +456,15 @@ export function useTasks(){
 
   const changeDateCalendar = async (
     id:number,
-    date:string
+    startDate:string,
+    dueDate:string,
   ) => {
 
     const task =tasks.find(
       task => task.id ===id
     );
+
+    console.log(startDate,dueDate)
 
     if(!task) return;
 
@@ -450,7 +476,8 @@ export function useTasks(){
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            dueDate: date,
+            startDate: startDate,
+            dueDate: dueDate,
             title: task.title,
             concept: task.concept,
             starttime: task.starttime,
@@ -468,7 +495,7 @@ export function useTasks(){
     setTasks((prev) =>
         prev.map((task) =>
             task.id === id
-            ? {...task, dueDate:date} :task
+            ? {...task, dueDate:dueDate, startDate:startDate} :task
         )
     );
   };
@@ -478,31 +505,37 @@ export function useTasks(){
         editId,
         editConcept,
         editTitle,
-        editDate,
+        editStartDate,
+        editDueDate,
         editPosition,
         editStartTime,
         editEndTime,
         newTitle,
-        newDate,
+        newStartDate,
+        newDueDate,
         newConcept,
         newStartTime,
         newEndTime,
         newTitleCalendar,
-        newDateCalendar,
+        newStartDateCalendar,
+        newDueDateCalendar,
         newConceptCalendar,
         newStartTimeCalendar,
         newEndTimeCalendar,
         setEditConcept,
-        setEditDate,
+        setEditStartDate,
+        setEditDueDate,
         setEditTitle,
         setEditStartTime,
         setEditEndTime,
-        setNewDate,
+        setNewStartDate,
+        setNewDueDate,
         setNewTitle,
         setNewConcept,
         setNewStartTime,
         setNewEndTime,
-        setNewDateCalendar,
+        setNewStartDateCalendar,
+        setNewDueDateCalendar,
         setNewTitleCalendar,
         setNewConceptCalendar,
         setNewStartTimeCalendar,

@@ -10,6 +10,7 @@ class Task(Base):
     title = Column(String(1024))
 
     concept = Column(Text)
+    startDate = Column(Date)
     dueDate = Column(Date)
 
     done = Column(Boolean, default=False)

@@ -18,7 +18,8 @@ type Props = {
   CancelEdit: () => void;
   deleteTask: (id:number) => void;
 
-  editDate: string;
+  editDueDate: string;
+  editStartDate: string;
   editTitle: string;
   editConcept: string;
   editId: number|null;
@@ -26,7 +27,8 @@ type Props = {
   editStartTime: string;
   editEndTime: string;
 
-  setEditDate: (value:string) => void;
+  setEditDueDate: (value:string) => void;
+  setEditStartDate: (value:string) => void;
   setEditTitle: (value:string) => void;
   setEditConcept: (value:string) => void;
   setEditStartTime: (value:string) => void;
@@ -48,7 +50,8 @@ export default function TaskList({
     CancelEdit,
     deleteTask,
 
-  editDate,
+  editDueDate,
+  editStartDate,
   editTitle,
   editConcept,
   editStartTime,
@@ -56,7 +59,8 @@ export default function TaskList({
   editId,
   editPosition,
 
-  setEditDate,
+  setEditDueDate,
+  setEditStartDate,
   setEditTitle,
   setEditConcept,
   setEditStartTime,
@@ -116,7 +120,8 @@ export default function TaskList({
                 startEdit={startEdit}
                 CancelEdit={CancelEdit}
                 deleteTask={deleteTask}
-                editDate={editDate}
+                editDueDate={editDueDate}
+                editStartDate={editStartDate}
                 editTitle={editTitle}
                 editConcept={editConcept}
                 editStartTime={editStartTime}
@@ -124,7 +129,8 @@ export default function TaskList({
                 editId={editId}
                 editPosition={editPosition}
 
-                setEditDate={setEditDate}
+                setEditDueDate={setEditDueDate}
+                setEditStartDate={setEditStartDate}
                 setEditTitle={setEditTitle}
                 setEditConcept={setEditConcept}
                 setEditStartTime={setEditStartTime}

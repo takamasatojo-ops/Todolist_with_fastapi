@@ -7,6 +7,7 @@ from pydantic import BaseModel
 class TaskBase(BaseModel):
     title: str
     concept: Optional[str] = None
+    startDate: Optional[date] = None
     dueDate: Optional[date] = None
     starttime: Optional[time] = None
     endtime: Optional[time] = None
