@@ -16,6 +16,6 @@ class Task(Base):
     done = Column(Boolean, default=False)
 
     taskOrder = Column(Integer, default=0)
-    
+
     starttime = Column(Time)
     endtime = Column(Time)

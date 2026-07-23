@@ -41,7 +41,7 @@ export default function EditTask({
 
 }:Props){
 
-  const [MultiDay, setMultiDay] = useState(false);
+  const [MultiDay, setMultiDay] = useState(editDueDate!==editStartDate);
 
   return (
     <>
@@ -102,7 +102,7 @@ export default function EditTask({
                 <input
                     type = "checkbox"
                     checked = {MultiDay}
-                    onChange = {() => setMultiDay(false)}
+                    onChange = {() => {setMultiDay(false); setEditDueDate(editStartDate)}}
                     style = {{marginLeft: "4px"}}
                 />
         <button type ="button" onClick={CancelEdit} style={{marginLeft: "4px"}}>
@@ -116,7 +116,7 @@ export default function EditTask({
             type = "date"
             placeholder = "日付変更"
             value = {editStartDate}
-            onChange = {(e) => setEditStartDate(e.target.value)}
+            onChange = {(e) => {setEditStartDate(e.target.value); setEditDueDate(e.target.value)}}
             style = {{padding: "8px", marginRight: "8px", width: "100px" }}
         />
         <input
@@ -160,7 +160,7 @@ export default function EditTask({
                 <input
                     type = "checkbox"
                     checked = {MultiDay}
-                    onChange = {() => setMultiDay(true)}
+                    onChange = {() => {setMultiDay(true); setEditDueDate(editDueDate)}}
                     style = {{marginLeft: "4px"}}
                 />
         <button type ="button" onClick={CancelEdit} style={{marginLeft: "4px"}}>

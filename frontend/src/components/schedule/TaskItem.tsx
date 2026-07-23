@@ -101,7 +101,7 @@ export default function TaskItem({
                 <span style={{ marginRight: "4px"}}>
                     {task.startDate}
                 </span>
-                {(task.starttime || task.endtime || task.dueDate) && (
+                {(task.starttime || task.endtime || (task.dueDate && (task.startDate !== task.dueDate))) && (
                     <>
                         <span style={{ marginRight: "4px"}}>
                             {task.starttime?.slice(0,5)}
@@ -109,9 +109,11 @@ export default function TaskItem({
                         <span style={{ marginRight: "4px"}}>
                             〜
                         </span>
+                        {(task.startDate !== task.dueDate) && (
                         <span style={{ marginRight: "4px"}}>
                             {task.dueDate}
                         </span>
+                        )}
                         <span style={{ marginRight: "4px"}}>
                             {task.endtime?.slice(0,5)}
                         </span>

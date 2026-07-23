@@ -75,6 +75,7 @@ export default function Home() {
         ArrangeTasks,
         reorderTasks,
         changeDateCalendar,
+        changeMultiDateCalendar,
         InputResetEdit,
         InputResetAdd,
         InputResetAddCalendar,
@@ -285,12 +286,12 @@ export default function Home() {
         <TaskCalendar
                 tasks={tasks}
                 startEdit={startCalendarEdit}
-                setNewDueDate={setNewDueDateCalendar}
                 setNewStartDate={setNewStartDateCalendar}
                 setShowEditModal={setShowEditModal}
                 setShowAddModal={setShowAddModal}
                 setSelectedTask={setSelectedTask}
                 changeDateCalendar={changeDateCalendar}
+                changeMultiDateCalendar={changeMultiDateCalendar}
         />
       </div>
     </main>

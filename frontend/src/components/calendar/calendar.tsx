@@ -8,23 +8,23 @@ import { Task } from "@/types/tasks";
 type Props = {
     tasks: Task[];
     startEdit: (task:Task) => void;
-    setNewDueDate: (value:string) => void;
     setNewStartDate: (value:string) => void;
     setShowEditModal: (value: boolean) => void;
     setShowAddModal: (value: boolean) => void;
     setSelectedTask: (task:Task) => void;
-    changeDateCalendar: (id:number, startDate:string, dueDate:string) => void;
+    changeDateCalendar: (id:number, startDate:string) => void;
+    changeMultiDateCalendar: (id:number, startDate:string, dueDate:string) => void;
 };
 
 export default function TaskCalendar({
     tasks,
     startEdit,
-    setNewDueDate,
     setNewStartDate,
     setShowEditModal,
     setShowAddModal,
     setSelectedTask,
     changeDateCalendar,
+    changeMultiDateCalendar,
 }:Props) {
 
     const events = useMemo(() => {
@@ -36,7 +36,7 @@ export default function TaskCalendar({
         };
 
         return tasks.map((task) => {
-            if (task.dueDate){
+            if (task.dueDate && task.dueDate !== task.startDate){
 
             return {
             id: String(task.id),
@@ -62,6 +62,7 @@ export default function TaskCalendar({
                 plugins={[dayGridPlugin, interactionPlugin]}
                 editable={true}
                 selectable={true}
+                eventResizableFromStart={true}
                 headerToolbar={{
                     left: "prev,next today",
                     center: "title",
@@ -87,7 +88,27 @@ export default function TaskCalendar({
                     }
                 }}
                 eventDrop={(info)=>{
-                    changeDateCalendar(Number(info.event.id), info.event.startStr, info.event.endStr)
+                    const SubtractDay = (setDay: string) => {
+                        const CalendarDate = new Date(setDay);
+                        CalendarDate.setDate(CalendarDate.getDate()-1);
+
+                    return CalendarDate.toISOString().split("T")[0];
+                    };
+                    if (!info.event.endStr || info.event.endStr===info.event.startStr) {
+                        changeDateCalendar(Number(info.event.id), info.event.startStr)
+                    }
+                    else {
+                        changeMultiDateCalendar(Number(info.event.id), info.event.startStr, SubtractDay(info.event.endStr))
+                    }
+                }}
+                eventResize={(info)=>{
+                    const SubtractDay = (setDay: string) => {
+                        const CalendarDate = new Date(setDay);
+                        CalendarDate.setDate(CalendarDate.getDate()-1);
+
+                    return CalendarDate.toISOString().split("T")[0];
+                    };
+                        changeMultiDateCalendar(Number(info.event.id), info.event.startStr, SubtractDay(info.event.endStr))
                 }}
                 height={600}
                 />

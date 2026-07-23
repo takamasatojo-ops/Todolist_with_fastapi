@@ -267,11 +267,18 @@ export function useTasks(){
       return "task";
     };
 
-    if ((editStartTime.trim() && editEndTime.trim() && !editDueDate.trim()) && (editStartTime>editEndTime) 
-      || (editDueDate.trim() && (editStartDate>editDueDate))) {
+    if (!editDueDate.trim()) {
+      setEditDueDate(editStartDate)
+    };
+
+    if (editDueDate.trim() && (editStartDate>editDueDate)) {
       return "time";
     }
-    
+
+    if ((editStartTime.trim() && editEndTime.trim()) && (editDueDate===editStartDate) && (editStartTime>editEndTime) ) {
+      return "time";
+    }
+
     if (editId===null) return;
 
       const res = await fetch(
@@ -337,8 +344,15 @@ export function useTasks(){
       return "task";
     }
 
-    if ((newStartTime.trim() && newEndTime.trim() && !newDueDate.trim()) && (newStartTime>newEndTime) 
-      || (newDueDate.trim() && (newStartDate>newDueDate))) {
+    if (!newDueDate.trim()) {
+      setNewDueDate(newStartDate);
+    };
+
+    if  (newDueDate.trim() && (newStartDate>newDueDate)) {
+      return "time";
+    }
+
+    if ((newStartTime.trim() && newEndTime.trim()) && (newDueDate===newStartDate) && (newStartTime>newEndTime)) {
       return "time";
     }
 
@@ -400,9 +414,15 @@ export function useTasks(){
       return "task";
     }
 
+    if (!newDueDateCalendar.trim()) {
+      setNewDueDateCalendar(newStartDateCalendar);
+    };
 
-    if ((newStartTimeCalendar.trim() && newEndTimeCalendar.trim() && !newDueDateCalendar.trim()) && (newStartTimeCalendar>newEndTimeCalendar) 
-      || (newDueDateCalendar.trim() && (newStartDateCalendar>newDueDateCalendar))) {
+    if (newDueDateCalendar.trim() && newStartDateCalendar>newDueDateCalendar) {
+      return "time";
+    }
+
+    if ((newStartTimeCalendar.trim() && newEndTimeCalendar.trim()) && (newDueDateCalendar===newStartDateCalendar) && (newStartTimeCalendar>newEndTimeCalendar) ) {
       return "time";
     }
 
@@ -457,14 +477,55 @@ export function useTasks(){
   const changeDateCalendar = async (
     id:number,
     startDate:string,
-    dueDate:string,
   ) => {
 
     const task =tasks.find(
       task => task.id ===id
     );
 
-    console.log(startDate,dueDate)
+    if(!task) return;
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            startDate: startDate,
+            dueDate: startDate,
+            title: task.title,
+            concept: task.concept,
+            starttime: task.starttime,
+            endtime: task.endtime,
+            done: task.done,
+            taskOrder: task.taskOrder
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("日付変更処理に失敗しました");
+      }
+
+    setTasks((prev) =>
+        prev.map((task) =>
+            task.id === id
+            ? {...task, startDate:startDate, dueDate:startDate} :task
+        )
+    );
+  };
+
+  const changeMultiDateCalendar = async (
+    id:number,
+    startDate:string,
+    dueDate:string,
+  ) => {
+
+    const task =tasks.find(
+      task => task.id ===id
+    );
 
     if(!task) return;
 
@@ -551,6 +612,7 @@ export function useTasks(){
         ArrangeTasks,
         reorderTasks,
         changeDateCalendar,
+        changeMultiDateCalendar,
         InputResetEdit,
         InputResetAdd,
         InputResetAddCalendar,

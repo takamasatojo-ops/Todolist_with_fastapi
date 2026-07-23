@@ -74,7 +74,7 @@ export default function TaskList({
                     type = "date"
                     placeholder = "終了日"
                     value = {newDueDate}
-                    onChange = {(e) => setNewDueDate(e.target.value)}
+                    onChange = {(e) => {setNewDueDate(e.target.value);}}
                     style = {{padding: "8px", margin: "8px", width: "100px" }}
                 />
                 <input
@@ -119,7 +119,7 @@ export default function TaskList({
                     type = "date"
                     placeholder = "期日"
                     value = {newStartDate}
-                    onChange = {(e) => setNewStartDate(e.target.value)}
+                    onChange = {(e) => {setNewStartDate(e.target.value); setNewDueDate(e.target.value)}}
                     style = {{padding: "8px", margin: "8px", width: "100px" }}
                 />
                 <input
