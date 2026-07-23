@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 
 type Props = {
   editDueDate: string;
@@ -39,9 +39,18 @@ export default function EditTask({
   CancelEdit,
   InputResetEdit,
 
+
 }:Props){
 
-  const [MultiDay, setMultiDay] = useState(editDueDate!==editStartDate);
+  const [MultiDay, setMultiDay] = useState(false);
+
+  useEffect(()=> {
+    setMultiDay(!!editDueDate && !!editStartDate && (editStartDate !== editDueDate))
+    },
+  [editStartDate, editDueDate]);
+
+    console.log(editDueDate);
+  console.log(editStartDate);
 
   return (
     <>
@@ -160,7 +169,7 @@ export default function EditTask({
                 <input
                     type = "checkbox"
                     checked = {MultiDay}
-                    onChange = {() => {setMultiDay(true); setEditDueDate(editDueDate)}}
+                    onChange = {() => {setMultiDay(true)}}
                     style = {{marginLeft: "4px"}}
                 />
         <button type ="button" onClick={CancelEdit} style={{marginLeft: "4px"}}>

@@ -32,6 +32,7 @@ type Props = {
 
   CancelEdit:() => void;
   InputResetEdit:() => void;
+
 };
 
 export default function TaskItem({

@@ -147,6 +147,7 @@ export default function Home() {
     setShowAddModal(false);
   }
 
+
   return (
     <main>
       {showAddModal && (
@@ -282,6 +283,7 @@ export default function Home() {
 
                 ArrangeTasks={ArrangeTasks}
                 InputResetEdit={InputResetEdit}
+
         />
         <TaskCalendar
                 tasks={tasks}
